@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Internal.Scripts.Bootstrap
@@ -8,9 +9,16 @@ namespace Internal.Scripts.Bootstrap
     
     #region Public methods
 
-    public void LoadGameScene()
+    public async void LoadGameSceneAsync()
     {
-      UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
+      try
+      {
+        await UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(GameSceneName);
+      }
+      catch (Exception e)
+      {
+        throw new Exception($"Failed to load scene {GameSceneName}", e);
+      }
     }
 
     #endregion

@@ -195,9 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3fc2807c7b8470c9c8f1ef51e1a8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundGenerator
-  groundTiles:
-  - {fileID: 7335699571591753109, guid: 8a0c20969ef868e4d9c7b04d079e6611, type: 3}
-  - {fileID: 7625907953284126589, guid: e619ca4e858a00d4d8fd39639f05b762, type: 3}
 --- !u!1 &392519327
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ namespace Internal.Scripts.Bootstrap
   {
     [SerializeField]
     private GameSettings gameSettings;
-    public GameSettings Settigns
+    public GameSettings Settings
     {
       get => gameSettings;
     }

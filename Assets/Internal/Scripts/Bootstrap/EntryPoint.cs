@@ -17,11 +17,12 @@ namespace Internal.Scripts.Bootstrap
     {
       DontDestroyOnLoad(this.gameObject);
     }
-    
-    void Start()
+
+    private void Start()
     {
-      //TODO: Load resources etc.
-      SceneManager.GetInstance().LoadGameScene();
+      GameSettingsManager.GetInstance();
+      TileManager.GetInstance();
+      SceneManager.GetInstance().LoadGameSceneAsync();
     }
   }
 }
