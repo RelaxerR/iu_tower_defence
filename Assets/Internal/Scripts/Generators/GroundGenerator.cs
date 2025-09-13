@@ -40,7 +40,7 @@ namespace Internal.Scripts.Generators
               Instantiate(settings.GroundTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.identity, parent: this.transform);
               break;
             case Tile.TileType.RoadCorner:
-              Instantiate(settings.GroundCornerTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.identity, parent: this.transform);
+              Instantiate(settings.GroundCornerTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
               break;
             case Tile.TileType.Resource:
               Instantiate(settings.ResourceTiles[Random.Range(0, settings.ResourceTiles.Length)], position, Quaternion.identity, parent: this.transform);

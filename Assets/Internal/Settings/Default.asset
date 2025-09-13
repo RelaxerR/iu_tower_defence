@@ -17,8 +17,8 @@ MonoBehaviour:
     MapSizeX: 20
     MapSizeZ: 20
     CastleMaxPositionDelta: 5
-    RoadMinLength: 2
-    RoadMaxLength: 5
+    RoadMinLength: 3
+    RoadMaxLength: 6
     RoadMinTurns: 5
     RoadMaxTurns: 10
     GroundTiles:

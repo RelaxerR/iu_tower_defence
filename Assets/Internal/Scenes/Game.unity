@@ -192,9 +192,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 193511656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae3fc2807c7b8470c9c8f1ef51e1a8be, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e7c83b46e48a4522aab6260127339dd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GroundGenerator
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Generators.GroundGenerator
 --- !u!1 &392519327
 GameObject:
   m_ObjectHideFlags: 0
