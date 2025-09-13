@@ -1,0 +1,36 @@
+namespace Internal.Scripts.Models
+{
+  public class Tile
+  {
+    public enum TileType
+    {
+      Ground,
+      Road,
+      RoadCorner,
+      Resource,
+      Castle
+    }
+    public enum TileDirection
+    {
+      North, // +Z
+      East,  // +X
+      South, // -Z
+      West   // -X
+    }
+
+    public TileType Type;
+    public TileDirection Direction;
+    public int X;
+    public int Z;
+    public int Rotation; // Y Rotation in degrees (0, 90, 180, 270)
+
+    public Tile(TileType type, int x, int z, TileDirection direction, int rotation = 0)
+    {
+      Type = type;
+      Direction = direction;
+      X = x;
+      Z = z;
+      Rotation = rotation;
+    }
+  }
+}
