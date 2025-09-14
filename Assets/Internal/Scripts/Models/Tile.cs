@@ -7,7 +7,9 @@ namespace Internal.Scripts.Models
       Ground,
       Road,
       RoadCorner,
-      Resource,
+      ResourceTree,
+      ResourceStone,
+      ResourceDiamond,
       Castle
     }
     public enum TileDirection
