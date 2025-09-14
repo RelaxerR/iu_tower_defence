@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Internal.Scripts.Bootstrap;
 using Internal.Scripts.Bootstrap.Settings;
 using UnityEngine;
@@ -10,6 +11,9 @@ namespace Internal.Scripts.Controllers.Player
   [RequireComponent(typeof(PlayerInput))]
   public class PlayerController : MonoBehaviour
   {
+    [SerializeField]
+    private VariableJoystick joystick;
+    
     private static PlayerSettings settings
     {
       get => GameSettingsManager.GetInstance().Settings.PlayerSettings;
@@ -34,6 +38,9 @@ namespace Internal.Scripts.Controllers.Player
     {
       var moveVector = new Vector3(moveInput.x, 0, moveInput.y);
       transform.Translate(moveVector * (Time.deltaTime * settings.MoveSpeed));
+      
+      var direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
+      transform.Translate(direction * (Time.deltaTime * settings.MoveSpeed));
     }
   }
 }
