@@ -51,3 +51,13 @@ MonoBehaviour:
     - {fileID: 8184577537208582226, guid: 4d47db9e0318ca14793117d9d4255283, type: 3}
     CastleTiles:
     - {fileID: 4729789481492352889, guid: 9b14a15ae211fb44baedf764ee16f103, type: 3}
+  PlayerSettings:
+    MoveSpeed: 20
+    RotationSpeed: 720
+  CameraSettings:
+    CameraOffset: {x: 0, y: 10, z: -5}
+    CameraFollowSpeed: 5
+    BoundsMinZModifier: -1
+    BoundsMaxZModifier: -5
+    BoundsMinXModifier: -2
+    BoundsMaxXModifier: -2

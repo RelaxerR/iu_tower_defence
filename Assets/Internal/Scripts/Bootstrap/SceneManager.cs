@@ -38,7 +38,7 @@ namespace Internal.Scripts.Bootstrap
 
     private void Awake()
     {
-      DontDestroyOnLoad(this.gameObject);
+      DontDestroyOnLoad(gameObject);
     }
     
     #endregion
