@@ -27,6 +27,7 @@ namespace Internal.Scripts.Bootstrap.Settings
     public int MapSizeX = 20; // Tiles
     public int MapSizeZ = 20; // Tiles
     public int CreationAttemptLimit = 5; // Максимальное количество попыток создания тайла, прежде чем отказаться от его создания
+    public float MiscHeightOffset = 1f; // Высота, на которой будут размещаться случайные объекты (деревья, камни и т.д.)
     
     [Header("Tile Rotation Settings")]
     public int RoadRotationOffset = 90; // Смещение поворота для угловых тайлов дороги
@@ -81,6 +82,14 @@ namespace Internal.Scripts.Bootstrap.Settings
     public GameObject[] ResourceDiamondTiles;
     public GameObject[] CastleTiles;
     
+    [Header("Misc prefabs")]
+    public GameObject[] PlayerCastlePrefabs;
+    public GameObject[] TreeResourcePrefabs;
+    public GameObject[] StoneResourcePrefabs;
+    public GameObject[] DiamondResourcePrefabs;
+    public GameObject[] MiscObstaclePrefabs;
+    public GameObject[] RoadDecorationTiles;
+
     #endregion
   }
   

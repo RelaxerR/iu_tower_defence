@@ -37,10 +37,10 @@ namespace Internal.Scripts.Controllers.Player
     private void Update()
     {
       var moveVector = new Vector3(moveInput.x, 0, moveInput.y);
-      transform.Translate(moveVector * (Time.deltaTime * settings.MoveSpeed));
+      transform.Translate(moveVector * (Time.deltaTime * settings.MoveSpeed), Space.World);
       
       var direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
-      transform.Translate(direction * (Time.deltaTime * settings.MoveSpeed));
+      transform.Translate(direction * (Time.deltaTime * settings.MoveSpeed),Space.World);
     }
   }
 }
