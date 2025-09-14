@@ -10,6 +10,8 @@ namespace Internal.Scripts.Bootstrap.Settings
     #region MyRegion
     
     public GroundGeneratorSettings GroundGeneratorSettings;
+    public PlayerSettings PlayerSettings;
+    public CameraSettings CameraSettings;
 
     #endregion
 
@@ -79,6 +81,33 @@ namespace Internal.Scripts.Bootstrap.Settings
     public GameObject[] ResourceDiamondTiles;
     public GameObject[] CastleTiles;
     
+    #endregion
+  }
+  
+  [Serializable]
+  public class PlayerSettings
+  {
+    #region Player Settings
+
+    public float MoveSpeed = 5f;
+    public float RotationSpeed = 720f; // Degrees per second
+    
+    #endregion
+  }
+  
+  [Serializable]
+  public class CameraSettings
+  {
+    #region Camera Settings
+
+    public Vector3 CameraOffset = new Vector3(0, 10, -10);
+    public float CameraFollowSpeed = 5f;
+
+    public float BoundsMinZModifier = -1f;
+    public float BoundsMaxZModifier = -4f;
+    public float BoundsMinXModifier = +1f;
+    public float BoundsMaxXModifier = -1f;
+
     #endregion
   }
 }
