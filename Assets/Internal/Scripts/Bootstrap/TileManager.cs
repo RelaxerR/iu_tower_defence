@@ -43,17 +43,23 @@ namespace Internal.Scripts.Bootstrap
     /// <summary>
     /// Инициализирует тайлы на карте: размещает замок и генерирует дороги от него.
     /// </summary>
-    public void InitTiles()
+    public void InitTiles(int level)
     {
       Debug.Log("Initializing tiles...");
       var castleTile = GetCastleTile();
       Tiles.Add(castleTile.pos, castleTile.tile);
       Debug.Log($"Initialized castle tile at position: {castleTile.pos}");
-
+      
       CreateRoadFromCastle(castleTile.pos, North);
-      CreateRoadFromCastle(castleTile.pos, South);
+      if (level > settings.RoadLevelRequirement2) CreateRoadFromCastle(castleTile.pos, South);
+      if (level > settings.RoadLevelRequirement3) CreateRoadFromCastle(castleTile.pos, West);
+      if (level > settings.RoadLevelRequirement4) CreateRoadFromCastle(castleTile.pos, East);
+      
+      InitResources(level);
       
       Debug.Log($"Total tiles created: {Tiles.Count}");
+
+      FillGroundTiles();
     }
 
     /// <summary>
@@ -69,10 +75,73 @@ namespace Internal.Scripts.Bootstrap
 
     #region Private Methods - Tile Creation
 
+    private void FillGroundTiles()
+    {
+      for (var x = -settings.MapSizeX; x <= settings.MapSizeX; x++)
+      {
+        for (var z = -settings.MapSizeZ; z <= settings.MapSizeZ; z++)
+        {
+          if (Tiles.ContainsKey((x, z)))
+            continue;
+
+          var tile = new Tile(Ground, x, z, North);
+          Tiles.Add((x, z), tile);
+        }
+      }
+    }
+    private void InitResources(int level)
+    {
+      InitResourceTiles(ResourceTree, Mathf.CeilToInt(level * settings.TreeLevelModifier) + Random.Range(settings.FreeRandomTreeMin, settings.FreeRandomTreeMax));
+      InitResourceTiles(ResourceStone, Mathf.CeilToInt(level * settings.StoneLevelModifier) + Random.Range(settings.FreeRandomStoneMin, settings.FreeRandomStoneMax));
+      InitResourceTiles(ResourceDiamond, Mathf.CeilToInt(level * settings.DiamondLevelModifier) + Random.Range(settings.FreeRandomDiamondMin, settings.FreeRandomDiamondMax));
+    }
+    private void InitResourceTiles(Tile.TileType type, int amount)
+    {
+      for (var i = 0; i < amount; i++)
+      {
+        var (posX, posZ) = GetFreeRandomPosition();
+        
+        var tile = new Tile(type, posX, posZ, North);
+        if (Tiles.TryAdd((posX, posZ), tile))
+        {
+          Debug.Log($"Added resource tile of type {type} at ({posX}, {posZ})");
+        }
+        else
+        {
+          Debug.LogError($"Could not add resource tile at ({posX}, {posZ}), already occupied by {Tiles[(posX, posZ)].Type} - position was not free");
+        }
+      }
+    }
+    private static (int x, int z) GetRandomPosition()
+    {
+      var posX = Mathf.RoundToInt(Random.Range(-settings.MapSizeX, settings.MapSizeX));
+      var posZ = Mathf.RoundToInt(Random.Range(-settings.MapSizeZ, settings.MapSizeZ));
+      return (posX, posZ);
+    }
+    private (int x, int z) GetFreeRandomPosition()
+    {
+      var attempt = 0;
+      (int x, int z) pos;
+      
+      do
+      {
+        pos = GetRandomPosition();
+        attempt++;
+
+        if (attempt <= settings.CreationAttemptLimit)
+          continue;
+        
+        Debug.LogWarning("Exceeded maximum attempts to find free position for resource");
+        return pos;
+
+      } while (Tiles.ContainsKey(pos));
+      
+      return pos;
+    }
     private static ((int x, int z) pos, Tile tile) GetCastleTile()
     {
-      var posX = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDelta, settings.CastleMaxPositionDelta));
-      var posZ = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDelta, settings.CastleMaxPositionDelta));
+      var posX = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDeltaX, settings.CastleMaxPositionDeltaX));
+      var posZ = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDeltaZ, settings.CastleMaxPositionDeltaZ));
       Debug.Log($"Generating castle at position: ({posX}, {posZ})");
       return ((posX, posZ), new Tile(Castle, posX, posZ, North));
     }

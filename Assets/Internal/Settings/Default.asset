@@ -14,20 +14,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Bootstrap.Settings.GameSettings
   GroundGeneratorSettings:
     DefaultTileSize: 5
-    MapSizeX: 20
-    MapSizeZ: 20
-    CastleMaxPositionDelta: 5
-    RoadMinLength: 3
-    RoadMaxLength: 6
-    RoadMinTurns: 5
+    MapSizeX: 8
+    MapSizeZ: 4
+    CreationAttemptLimit: 5
+    RoadRotationOffset: 0
+    RoadCornerRotationOffset: -90
+    CastleMaxPositionDeltaX: 2
+    CastleMaxPositionDeltaZ: 1
+    RoadMinLength: 2
+    RoadMaxLength: 4
+    RoadMinTurns: 1
     RoadMaxTurns: 10
+    RoadLevelRequirement2: 10
+    RoadLevelRequirement3: 20
+    RoadLevelRequirement4: 30
+    TreeLevelModifier: 3
+    StoneLevelModifier: 2
+    DiamondLevelModifier: 1
+    FreeRandomTreeMin: 5
+    FreeRandomTreeMax: 10
+    FreeRandomStoneMin: 3
+    FreeRandomStoneMax: 7
+    FreeRandomDiamondMin: 1
+    FreeRandomDiamondMax: 3
     GroundTiles:
     - {fileID: 7335699571591753109, guid: 8a0c20969ef868e4d9c7b04d079e6611, type: 3}
     GroundCornerTiles:
-    - {fileID: 7011808802120915109, guid: 7e4ad2a5f287a254183e0d268c6cb694, type: 3}
+    - {fileID: 8582404040918290442, guid: dfb77036990ea774b859188dd8c1a75d, type: 3}
     RoadTiles:
     - {fileID: 6114190999430904148, guid: 51ce274245980e646b7f13322289340c, type: 3}
-    ResourceTiles:
+    ResourceTreeTiles:
+    - {fileID: 5957245373432176809, guid: a7672c759ddfa15479841db19aed0c0e, type: 3}
+    ResourceStoneTiles:
     - {fileID: 3203841511016326922, guid: 441456d5431a9a4428702255dd4f8476, type: 3}
+    ResourceDiamondTiles:
+    - {fileID: 8184577537208582226, guid: 4d47db9e0318ca14793117d9d4255283, type: 3}
     CastleTiles:
     - {fileID: 4729789481492352889, guid: 9b14a15ae211fb44baedf764ee16f103, type: 3}

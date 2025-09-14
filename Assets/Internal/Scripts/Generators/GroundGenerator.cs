@@ -17,7 +17,7 @@ namespace Internal.Scripts.Generators
     private void Start()
     {
       Debug.Log("Starting ground generation...");
-      TileManager.GetInstance().InitTiles();
+      TileManager.GetInstance().InitTiles(1);
       GenerateGround();
       Debug.Log("Ground generation completed");
     }
@@ -56,23 +56,31 @@ namespace Internal.Scripts.Generators
           {
             case Tile.TileType.Castle:
               Debug.Log($"Instantiating castle tile at ({x}, {z})");
-              Instantiate(settings.CastleTiles[Random.Range(0, settings.CastleTiles.Length)], position, Quaternion.identity, parent: this.transform);
+              Instantiate(settings.CastleTiles[Random.Range(0, settings.CastleTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
               break;
             case Tile.TileType.Road:
               Debug.Log($"Instantiating road tile at ({x}, {z}) with rotation {tile.Rotation}");
-              Instantiate(settings.RoadTiles[Random.Range(0, settings.RoadTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
+              Instantiate(settings.RoadTiles[Random.Range(0, settings.RoadTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation + settings.RoadRotationOffset, Vector3.up), parent: this.transform);
               break;
             case Tile.TileType.Ground:
               Debug.Log($"Instantiating ground tile at ({x}, {z})");
-              Instantiate(settings.GroundTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.identity, parent: this.transform);
+              Instantiate(settings.GroundTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
               break;
             case Tile.TileType.RoadCorner:
               Debug.Log($"Instantiating road corner tile at ({x}, {z}) with rotation {tile.Rotation}");
-              Instantiate(settings.GroundCornerTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
+              Instantiate(settings.GroundCornerTiles[Random.Range(0, settings.GroundTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation + settings.RoadCornerRotationOffset, Vector3.up), parent: this.transform);
               break;
-            case Tile.TileType.Resource:
+            case Tile.TileType.ResourceTree:
               Debug.Log($"Instantiating resource tile at ({x}, {z})");
-              Instantiate(settings.ResourceTiles[Random.Range(0, settings.ResourceTiles.Length)], position, Quaternion.identity, parent: this.transform);
+              Instantiate(settings.ResourceTreeTiles[Random.Range(0, settings.ResourceTreeTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
+              break;
+            case Tile.TileType.ResourceStone:
+              Debug.Log($"Instantiating resource tile at ({x}, {z})");
+              Instantiate(settings.ResourceStoneTiles[Random.Range(0, settings.ResourceStoneTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
+              break;
+            case Tile.TileType.ResourceDiamond:
+              Debug.Log($"Instantiating resource tile at ({x}, {z})");
+              Instantiate(settings.ResourceDiamondTiles[Random.Range(0, settings.ResourceDiamondTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: this.transform);
               break;
             default:
               Debug.LogError($"Unknown tile type: {tile.Type} at ({x}, {z})");
