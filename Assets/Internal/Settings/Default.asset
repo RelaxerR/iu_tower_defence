@@ -58,6 +58,6 @@ MonoBehaviour:
     CameraOffset: {x: 0, y: 10, z: -5}
     CameraFollowSpeed: 5
     BoundsMinZModifier: -1
-    BoundsMaxZModifier: -5
-    BoundsMinXModifier: -2
+    BoundsMaxZModifier: -4
+    BoundsMinXModifier: 2
     BoundsMaxXModifier: -2
