@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f76dc2d84a0a47b19c23fde135465227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Resources.ResourceTree
+  _resourceSettings: {fileID: 11400000, guid: 9fc80cf9b93b44d28978f279704113ed, type: 2}
 --- !u!1 &4291722214108863390
 GameObject:
   m_ObjectHideFlags: 0

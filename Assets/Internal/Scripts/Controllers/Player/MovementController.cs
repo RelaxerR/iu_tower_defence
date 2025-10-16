@@ -9,7 +9,7 @@ namespace Internal.Scripts.Controllers.Player
 {
   [RequireComponent(typeof(Rigidbody))]
   [RequireComponent(typeof(PlayerInput))]
-  public class PlayerController : MonoBehaviour
+  public class MovementController : MonoBehaviour
   {
     [SerializeField]
     private VariableJoystick joystick;

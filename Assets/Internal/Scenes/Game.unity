@@ -341,7 +341,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1807002285238299967, guid: 1a085fc12b3474b288b94d5194c15035, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 669318000}
   m_SourcePrefab: {fileID: 100100000, guid: 1a085fc12b3474b288b94d5194c15035, type: 3}
 --- !u!1 &193511656
 GameObject:
@@ -613,6 +616,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Player.CameraFollower
   target: {fileID: 855641675}
+--- !u!1 &403498482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1439472650419623118, guid: f8ee0004803874528a13516d9badf034, type: 3}
+  m_PrefabInstance: {fileID: 1860052231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &403498486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403498482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07af7e2c0234310ab9915ab82e5534e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.UI.ResourceDisplayer
+  _resourceSettings: {fileID: 11400000, guid: de74f339fb7e44167920b321dc620360, type: 2}
 --- !u!1001 &610976691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -730,6 +751,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42844a4fccbd54746b90cade4ff70f73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &669317996 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1807002285238299967, guid: 1a085fc12b3474b288b94d5194c15035, type: 3}
+  m_PrefabInstance: {fileID: 155576480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &669318000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669317996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07af7e2c0234310ab9915ab82e5534e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.UI.ResourceDisplayer
+  _resourceSettings: {fileID: 11400000, guid: 21be3947130f040b39e93b39469b4aae, type: 2}
 --- !u!1 &830315723
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +859,7 @@ GameObject:
   - component: {fileID: 855641676}
   - component: {fileID: 855641677}
   - component: {fileID: 855641679}
+  - component: {fileID: 855641680}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1060,6 +1100,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84466fb71d494e498ba39d971b6f694a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Player.ResourceCollector
+  OnCollect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 855641680}
+        m_TargetAssemblyTypeName: Internal.Scripts.Controllers.Player.ResourceInventory,
+          Assembly-CSharp
+        m_MethodName: OnResourceCollected
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &855641679
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1081,6 +1137,57 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 2, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &855641680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855641672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 929ad6c7580a46958e8e5545cdc0c0ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Player.ResourceInventory
+  OnResourceAmountChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2040657291}
+        m_TargetAssemblyTypeName: Internal.Scripts.UI.ResourceDisplayer, Assembly-CSharp
+        m_MethodName: OnResourceAmountChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 403498486}
+        m_TargetAssemblyTypeName: Internal.Scripts.UI.ResourceDisplayer, Assembly-CSharp
+        m_MethodName: OnResourceAmountChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 669318000}
+        m_TargetAssemblyTypeName: Internal.Scripts.UI.ResourceDisplayer, Assembly-CSharp
+        m_MethodName: OnResourceAmountChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1249572945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,7 +1270,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1249572948}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 855641678}
+        m_TargetAssemblyTypeName: Internal.Scripts.Controllers.Player.ResourceMiner,
+          Assembly-CSharp
+        m_MethodName: OnMine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1249572948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1689,8 +1809,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1439472650419623118, guid: f8ee0004803874528a13516d9badf034, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 403498486}
   m_SourcePrefab: {fileID: 100100000, guid: f8ee0004803874528a13516d9badf034, type: 3}
+--- !u!1 &2040657287 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1269326243897226924, guid: 76a72ab7c785a46cfbba78033b3b3880, type: 3}
+  m_PrefabInstance: {fileID: 666669027683336081}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2040657291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040657287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07af7e2c0234310ab9915ab82e5534e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.UI.ResourceDisplayer
+  _resourceSettings: {fileID: 11400000, guid: 9fc80cf9b93b44d28978f279704113ed, type: 2}
 --- !u!1 &2047107271
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,7 +2163,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1269326243897226924, guid: 76a72ab7c785a46cfbba78033b3b3880, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2040657291}
   m_SourcePrefab: {fileID: 100100000, guid: 76a72ab7c785a46cfbba78033b3b3880, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
