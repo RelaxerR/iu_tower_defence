@@ -58,12 +58,7 @@ MonoBehaviour:
     - {fileID: 75310195703394631, guid: a178e3ddd4a467d4090e2b4a7a5e394f, type: 3}
     - {fileID: 7857546456135422416, guid: f2db1d06f79fef94592fee4b86c679d8, type: 3}
     TreeResourcePrefabs:
-    - {fileID: 4738608102601343809, guid: 4f6f2d05bc4258447abfe7be72ad4328, type: 3}
     - {fileID: 453970571419920900, guid: 6564f89dfb84e1d4eb0b36a119363149, type: 3}
-    - {fileID: 6271565710549296496, guid: 416097c1b82bc784f908868998f9f0fa, type: 3}
-    - {fileID: 4307048573937922697, guid: d8b0a9785d56b054b88e7283c3c5349b, type: 3}
-    - {fileID: 1048639736965758780, guid: 45d16f243d8652a48907103485d64528, type: 3}
-    - {fileID: 7564814919071278646, guid: b85d88c087c0a4e489dc94b5f62f72d1, type: 3}
     StoneResourcePrefabs:
     - {fileID: 737993958962250248, guid: 6f78cf8a9e9559642936af3bb54efc5b, type: 3}
     - {fileID: 6235498119045190369, guid: f6a6beec1377be64482ff5f951ee93e0, type: 3}
@@ -189,3 +184,10 @@ MonoBehaviour:
     BoundsMaxZModifier: -4
     BoundsMinXModifier: 2
     BoundsMaxXModifier: -2
+  ResourceSettings:
+    TreeMinAmount: 3
+    TreeMaxAmount: 7
+    StoneMinAmount: 2
+    StoneMaxAmount: 5
+    DiamondMinAmount: 1
+    DiamondMaxAmount: 3

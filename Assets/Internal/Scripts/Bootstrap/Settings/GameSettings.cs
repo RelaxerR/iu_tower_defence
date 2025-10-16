@@ -12,6 +12,7 @@ namespace Internal.Scripts.Bootstrap.Settings
     public GroundGeneratorSettings GroundGeneratorSettings;
     public PlayerSettings PlayerSettings;
     public CameraSettings CameraSettings;
+    public ResourceSettings ResourceSettings;
 
     #endregion
 
@@ -116,6 +117,21 @@ namespace Internal.Scripts.Bootstrap.Settings
     public float BoundsMaxZModifier = -4f;
     public float BoundsMinXModifier = +1f;
     public float BoundsMaxXModifier = -1f;
+
+    #endregion
+  }
+  
+  [Serializable]
+  public class ResourceSettings
+  {
+    #region Resource Settings
+
+    public int TreeMinAmount = 3;
+    public int TreeMaxAmount = 7;
+    public int StoneMinAmount = 2;
+    public int StoneMaxAmount = 5;
+    public int DiamondMinAmount = 1;
+    public int DiamondMaxAmount = 3;
 
     #endregion
   }

@@ -25,14 +25,6 @@ namespace Internal.Scripts.Controllers.Player
     {
       moveInput = context.ReadValue<Vector2>();
     }
-    
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-      if (context.performed)
-      {
-        Debug.Log("Attack");
-      }
-    }
 
     private void Update()
     {

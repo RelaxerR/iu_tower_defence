@@ -33,6 +33,7 @@ namespace Internal.Scripts.Bootstrap
     private void Awake()
     {
       DontDestroyOnLoad(gameObject);
+      _instance = this;
       Debug.Log("TileManager initialized");
     }
 
