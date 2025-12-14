@@ -6,6 +6,7 @@ namespace Internal.Scripts.Models
     {
       Ground,
       Road,
+      RoadEnd,
       RoadCorner,
       ResourceTree,
       ResourceStone,

@@ -39,9 +39,9 @@ namespace Internal.Scripts.Generators
       var generatedCount = 0;
       var skippedCount = 0;
       
-      for (var x = -settings.MapSizeX; x < settings.MapSizeX; x++)
+      for (var x = -settings.MapSizeX; x <= settings.MapSizeX; x++)
       {
-        for (var z = -settings.MapSizeZ; z < settings.MapSizeZ; z++)
+        for (var z = -settings.MapSizeZ; z <= settings.MapSizeZ; z++)
         {
           var position = new Vector3(x * settings.DefaultTileSize, 0, z * settings.DefaultTileSize);
           var tile = tileManager.Tiles.GetValueOrDefault((x, z));
@@ -57,6 +57,10 @@ namespace Internal.Scripts.Generators
             case Tile.TileType.Castle:
               Debug.Log($"Instantiating castle tile at ({x}, {z})");
               Instantiate(settings.CastleTiles[Random.Range(0, settings.CastleTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation, Vector3.up), parent: transform);
+              break;
+            case Tile.TileType.RoadEnd:
+              Debug.Log($"Instantiating road end tile at ({x}, {z}) with rotation {tile.Rotation}");
+              Instantiate(settings.RoadEndTiles[Random.Range(0, settings.RoadEndTiles.Length)], position, Quaternion.AngleAxis(tile.Rotation + settings.RoadRotationOffset, Vector3.up), parent: transform);
               break;
             case Tile.TileType.Road:
               Debug.Log($"Instantiating road tile at ({x}, {z}) with rotation {tile.Rotation}");

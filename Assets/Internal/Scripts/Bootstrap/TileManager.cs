@@ -165,6 +165,9 @@ namespace Internal.Scripts.Bootstrap
       
       var currentX = startX;
       var currentZ = startZ;
+      var prevCurrentX = startX;
+      var prevCurrentZ = startZ;
+      bool isRechedBounds = false;
       var currentDirection = initialDirection;
       var excludedDirection = GetOpposite(initialDirection);
       var currentRotation = initialRotation;
@@ -178,6 +181,7 @@ namespace Internal.Scripts.Bootstrap
         if (IsOutOfMapBounds(currentX, currentZ))
         {
           Debug.Log($"Road stopped at ({currentX}, {currentZ}) - out of bounds");
+          isRechedBounds = true;
           break;
         }
 
@@ -193,6 +197,8 @@ namespace Internal.Scripts.Bootstrap
 
         Debug.Log($"Creating road segment #{turn + 1}: length={segmentLength}, direction={currentDirection}");
         var (endX, endZ) = CreateStraightRoadSegment(currentX, currentZ, currentDirection, segmentLength, currentRotation);
+        prevCurrentX = currentX;
+        prevCurrentZ = currentZ;
         currentX = endX;
         currentZ = endZ;
 
@@ -209,6 +215,9 @@ namespace Internal.Scripts.Bootstrap
         currentDirection = nextDirection;
         currentRotation = GetRotationForDirection(currentDirection);
       }
+      
+      if (isRechedBounds) Tiles[(prevCurrentX, prevCurrentZ)].Type = RoadEnd;
+      else Tiles[(currentX, currentZ)].Type = RoadEnd;
       
       Debug.Log($"Finished road creation ending at ({currentX}, {currentZ})");
     }

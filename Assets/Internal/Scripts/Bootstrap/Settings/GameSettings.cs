@@ -77,6 +77,7 @@ namespace Internal.Scripts.Bootstrap.Settings
     public GameObject[] GroundTiles;
     public GameObject[] GroundCornerTiles;
     public GameObject[] RoadTiles;
+    public GameObject[] RoadEndTiles;
     public GameObject[] ResourceTreeTiles;
     public GameObject[] ResourceStoneTiles;
     public GameObject[] ResourceDiamondTiles;

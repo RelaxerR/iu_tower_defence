@@ -28,6 +28,7 @@ namespace Internal.Scripts.Generators
         switch (tile.Type)
         {
           case Tile.TileType.Road:
+          case Tile.TileType.RoadEnd:
             prefab = settings.RoadDecorationTiles[Random.Range(0, settings.RoadDecorationTiles.Length)];
             position = GetRandomPositionOnTile(tile.X, tile.Z);
             break;

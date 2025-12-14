@@ -44,6 +44,8 @@ MonoBehaviour:
     - {fileID: 8582404040918290442, guid: dfb77036990ea774b859188dd8c1a75d, type: 3}
     RoadTiles:
     - {fileID: 6114190999430904148, guid: 51ce274245980e646b7f13322289340c, type: 3}
+    RoadEndTiles:
+    - {fileID: 6114190999430904148, guid: 2bbe23775457242719d80be5397ea4bb, type: 3}
     ResourceTreeTiles:
     - {fileID: 5957245373432176809, guid: a7672c759ddfa15479841db19aed0c0e, type: 3}
     ResourceStoneTiles:
