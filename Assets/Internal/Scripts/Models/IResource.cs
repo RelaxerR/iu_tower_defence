@@ -1,5 +1,6 @@
 using Internal.Scripts.Bootstrap;
 using Internal.Scripts.Bootstrap.Settings;
+using UnityEngine;
 
 namespace Internal.Scripts.Models
 {
@@ -8,10 +9,8 @@ namespace Internal.Scripts.Models
     public string Id { get; }
     public int Amount { get; set; }
     public void Collect();
-    public void CheckDepletion();
-    public static ResourceSettings Settings
-    {
-      get => GameSettingsManager.GetInstance().Settings.ResourceSettings;
-    }
+    public void OnSelected();
+    public void OnDeselected();
+    public void DestroySelf();
   }
 }

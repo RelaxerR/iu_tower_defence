@@ -13,7 +13,7 @@ namespace Internal.Scripts.Controllers.Player
     [CanBeNull]
     private IResource CurrentResource;
     
-    private UnityEvent<IResource> OnCollect;
+    public UnityEvent<string> OnCollect;
 
     public void OnMine()
     {
@@ -23,9 +23,18 @@ namespace Internal.Scripts.Controllers.Player
     private void CollectResource()
     {
       if (CurrentResource == null) return;
+      
       Debug.Log($"Collecting resource: {CurrentResource.Id}, Amount left: {CurrentResource.Amount}");
+      var resourceId = CurrentResource.Id;
+
       CurrentResource.Collect();
-      OnCollect?.Invoke(CurrentResource);
+      OnCollect?.Invoke(resourceId);
+      
+      if (CurrentResource.Amount > 0)
+        return;
+      
+      CurrentResource.DestroySelf();
+      CurrentResource = null;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,7 +43,17 @@ namespace Internal.Scripts.Controllers.Player
         return;
       
       Debug.Log($"Entered resource area ({resource.Id})");
+      resource.OnSelected();
       CurrentResource = resource;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+      if (!other.TryGetComponent<IResource>(out var resource))
+        return;
+      
+      Debug.Log($"Exited resource area ({resource.Id})");
+      resource.OnDeselected();
+      CurrentResource = null;
     }
   }
 }
