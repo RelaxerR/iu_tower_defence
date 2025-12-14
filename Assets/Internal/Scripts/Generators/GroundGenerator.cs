@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Internal.Scripts.Bootstrap;
 using Internal.Scripts.Models;
+using Unity.Mathematics;
+using UnityEngine.AI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,7 +27,7 @@ namespace Internal.Scripts.Generators
     #endregion
 
     #region Private Methods
-
+    
     /// <summary>
     /// Генерирует наземные тайлы на основе данных из TileManager.
     /// </summary>

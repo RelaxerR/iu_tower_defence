@@ -6,9 +6,10 @@ namespace Internal.Scripts.Controllers.Enemies
   public interface IEnemy
   {
     public EnemySettings GetSettings();
-    public void Spawn(Vector3 spawnPosition, Transform parent);
-    public void Attack(IBuilding building);
+    public void Attack();
     public void TakeDamage(float damage);
     public void Die();
+    public void Move();
+    public void SetTargetCastle(CastleController castle);
   }
 }

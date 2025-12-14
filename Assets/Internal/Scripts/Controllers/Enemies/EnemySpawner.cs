@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Internal.Scripts.Controllers.Buildings;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Internal.Scripts.Controllers.Enemies
@@ -17,6 +19,9 @@ namespace Internal.Scripts.Controllers.Enemies
     private Transform spawnPoint; // точка спавна (если null — используем позицию спавнера)
 
     private Coroutine spawnCoroutine;
+    
+    [CanBeNull]
+    private CastleController targetCastle;
 
     private void Start()
     {
@@ -25,7 +30,13 @@ namespace Internal.Scripts.Controllers.Enemies
         Debug.LogError("EnemySpawner: EnemyList is empty!", this);
         return;
       }
-
+      
+      targetCastle = FindAnyObjectByType<CastleController>();
+      if (!targetCastle)
+      {
+        Debug.LogError("EnemySpawner: No CastleController found in the scene!", this);
+        return;
+      }
       StartSpawning();
     }
 
@@ -41,11 +52,12 @@ namespace Internal.Scripts.Controllers.Enemies
     {
       while (true)
       {
-        yield return new WaitForSeconds(spawnInterval);
         SpawnRandomEnemy();
+        yield return new WaitForSeconds(spawnInterval);
       }
     }
 
+// Внутри метода SpawnRandomEnemy() в EnemySpawner.cs
     private void SpawnRandomEnemy()
     {
       if (EnemyList.Count == 0) return;
@@ -53,13 +65,20 @@ namespace Internal.Scripts.Controllers.Enemies
       var randomIndex = UnityEngine.Random.Range(0, EnemyList.Count);
       var enemyPrefab = EnemyList[randomIndex];
 
-      // Предполагается, что IEnemy — это интерфейс, но для спавна нужен GameObject.
-      // Поэтому добавим проверку: в реальности IEnemy должен быть реализован MonoBehaviour'ом.
-      // Лучше использовать List<GameObject> или List<EnemyController>, но если хочется интерфейс —
-      // убедитесь, что реализующий класс наследует MonoBehaviour.
-
       var position = spawnPoint ? spawnPoint.position : transform.position;
-      Instantiate(enemyPrefab.gameObject, position, Quaternion.identity, transform.parent);
+      GameObject newEnemyObj = Instantiate(enemyPrefab, position, Quaternion.identity, transform.parent); // Изменили на enemyPrefab, а не enemyPrefab.gameObject
+
+      // Получаем компонент IEnemy от созданного объекта
+      IEnemy spawnedEnemy = newEnemyObj.GetComponent<IEnemy>();
+      if (spawnedEnemy != null && spawnedEnemy is EnemyFox enemyFoxScript)
+      {
+        // Передаём цель врагу
+        enemyFoxScript.SetTargetCastle(targetCastle);
+      }
+      else
+      {
+        Debug.LogWarning("Spawned enemy does not implement IEnemy or is not EnemyFox script.", newEnemyObj);
+      }
     }
 
     private void OnDisable()

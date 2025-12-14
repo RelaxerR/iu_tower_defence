@@ -8,5 +8,6 @@ namespace Internal.Scripts.Controllers.Enemies
     public GameObject prefab;
     public float DamageAmount;
     public float Speed;
+    public float MaxHealth;
   }
 }

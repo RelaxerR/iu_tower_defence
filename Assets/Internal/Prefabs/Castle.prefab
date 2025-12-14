@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5236376758192305251
+--- !u!1 &573573865698385911
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,80 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7359440562777921470}
+  - component: {fileID: 918293182789584205}
+  - component: {fileID: 4256382536191118056}
+  - component: {fileID: 2086646657697054242}
+  - component: {fileID: 1711466465307859982}
+  - component: {fileID: 7850161223728742495}
   m_Layer: 0
-  m_Name: SpawnPoint
+  m_Name: Castle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7359440562777921470
+--- !u!4 &918293182789584205
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5236376758192305251}
+  m_GameObject: {fileID: 573573865698385911}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.75, z: 0}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6886611848557781998}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6114190999430904148
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6886611848557781998}
-  - component: {fileID: 7511427381748788299}
-  - component: {fileID: 5753634542604228737}
-  - component: {fileID: 7614594879010453073}
-  - component: {fileID: 2870618441891671813}
-  m_Layer: 0
-  m_Name: RoadEnd
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6886611848557781998
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114190999430904148}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7359440562777921470}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7511427381748788299
+--- !u!33 &4256382536191118056
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114190999430904148}
-  m_Mesh: {fileID: 2949864335245010142, guid: 8b7e3e687ffb6144c8cfbc0e3bc1e3a3, type: 3}
---- !u!23 &5753634542604228737
+  m_GameObject: {fileID: 573573865698385911}
+  m_Mesh: {fileID: 5827913793287301940, guid: a736403e8215c0644931533af77a47de, type: 3}
+--- !u!23 &2086646657697054242
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114190999430904148}
+  m_GameObject: {fileID: 573573865698385911}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -97,10 +65,10 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 772d9d9117eab56479d2738f542c054c, type: 2}
+  - {fileID: 2100000, guid: 300ee636ab1b3b7429c61eaa1f29b0b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,13 +91,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7614594879010453073
-MeshCollider:
+--- !u!65 &1711466465307859982
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114190999430904148}
+  m_GameObject: {fileID: 573573865698385911}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -141,23 +109,18 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5119328960516467693, guid: 6596997697f88ad4c93ad8feb9566fa2, type: 3}
---- !u!114 &2870618441891671813
+  serializedVersion: 3
+  m_Size: {x: 0.74355185, y: 0.740143, z: 0.74365073}
+  m_Center: {x: 0, y: 0.00001642108, z: -0.00000011920929}
+--- !u!114 &7850161223728742495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6114190999430904148}
+  m_GameObject: {fileID: 573573865698385911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4438940e89bf45a29cd2e4fb3d59c163, type: 3}
+  m_Script: {fileID: 11500000, guid: d4e95d2f0d3f49d9a38d853bcee626ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Enemies.EnemySpawner
-  EnemyList:
-  - {fileID: 6153671665360873297, guid: 8bf954a7ebd67432488defaac0f42cad, type: 3}
-  spawnInterval: 10
-  spawnPoint: {fileID: 7359440562777921470}
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Buildings.CastleController
