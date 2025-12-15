@@ -39,7 +39,7 @@ namespace Internal.Scripts.Controllers.Projectiles
             }
 
             // Двигаем снаряд в сторону цели
-            Vector3 direction = (target.position - transform.position).normalized;
+            Vector3 direction = (target.position - transform.position + new Vector3(0, 1f, 0)).normalized;
             transform.position += direction * speed * Time.deltaTime;
 
             // Поворачиваем снаряд в сторону движения (по желанию, для визуального эффекта)
