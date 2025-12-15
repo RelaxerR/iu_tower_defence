@@ -29,7 +29,7 @@ namespace Internal.Scripts.Controllers.Buildings
                 if (Time.time >= nextFireTime)
                 {
                     // Debug.Log($"[BuildingCrossbow] {gameObject.name}: Fire cooldown ready ({Time.time} >= {nextFireTime}), attempting to shoot.", this);
-                    TryShoot();
+                    if (CanShootByRotation) TryShoot();
                 }
                 else
                 {

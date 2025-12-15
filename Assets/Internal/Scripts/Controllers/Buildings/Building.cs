@@ -19,6 +19,8 @@ namespace Internal.Scripts.Controllers.Buildings
 
         private Transform lastKnownTarget = null;
 
+        protected bool CanShootByRotation;
+
         protected virtual void Start()
         {
             // Debug.Log($"[Building] {gameObject.name} initialized. Detection Radius: {detectionRadius}, Rotation Speed: {rotationSpeed}", this);
@@ -88,30 +90,25 @@ namespace Internal.Scripts.Controllers.Buildings
 
             nearestTarget = closestEnemy;
         }
-
+        
         protected virtual void RotateTowardsTarget()
         {
             if (nearestTarget == null)
             {
+                CanShootByRotation = false;
                 return;
             }
 
-            // В 3D вектор направления вычисляется как обычно
             Vector3 directionToTarget = nearestTarget.position - transform.position;
-
-            // Для поворота вокруг Y (ось вверх), игнорируем X и Z, если нужно поворот только по горизонтали
-            // Но обычно в 3D поворот в сторону цели делается по всем осям, поэтому оставим как есть
-            // Если нужно, чтобы башня поворачивалась только по Y (например, в плоскости Y), то:
-            directionToTarget.y = 0f; // <-- Закомментируйте, если нужно 3D поворот во всех осях
+            directionToTarget.y = 0f; // Только горизонтальный поворот
 
             if (directionToTarget.sqrMagnitude == 0f)
             {
                 Debug.LogWarning($"[Building] {gameObject.name}: Target is exactly on top of the building, cannot rotate.", this);
+                CanShootByRotation = false;
                 return;
             }
 
-            // Вычисляем направление взгляда (forward) в сторону цели
-            // Для этого используем LookRotation
             Quaternion targetRotation = Quaternion.LookRotation(directionToTarget, Vector3.up);
 
             // Плавный поворот
@@ -121,11 +118,22 @@ namespace Internal.Scripts.Controllers.Buildings
                 rotationSpeed * Time.deltaTime
             );
 
-            // Логируем поворот
+            // Вычисляем угол между текущим и целевым поворотом
             float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
-            if (angleDifference > 1f)
+
+            // Используем Mathf.Abs (хотя угол всегда положителен, но на всякий случай)
+            float absAngleDifference = Mathf.Abs(angleDifference);
+
+            // Проверяем, находится ли поворот в нужном диапазоне (например, 1 градус)
+            if (absAngleDifference <= 1f) // Можно заменить 1f на переменную, например maxAimAngle
             {
-                // Debug.Log($"[Building] {gameObject.name}: Rotating towards {nearestTarget.name}. Angle difference: {angleDifference:F2} degrees", this);
+                CanShootByRotation = true;
+                // Debug.Log($"[Building] {gameObject.name}: Accurate aim achieved, can shoot!", this);
+            }
+            else
+            {
+                CanShootByRotation = false;
+                // Debug.Log($"[Building] {gameObject.name}: Aiming... Angle diff: {absAngleDifference:F2}°", this);
             }
         }
 
