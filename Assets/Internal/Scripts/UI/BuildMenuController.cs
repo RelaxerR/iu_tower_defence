@@ -49,10 +49,10 @@ namespace Internal.Scripts.UI
     {
       // Get the tile under the player
       Vector3 playerPosition = _playerTransform.position;
-      
+    
       // Adjust raycast origin to look down from above the player
       Vector3 rayOrigin = new Vector3(playerPosition.x, playerPosition.y + 10f, playerPosition.z);
-      
+    
       RaycastHit hit;
       if (Physics.Raycast(rayOrigin, Vector3.down, out hit, Mathf.Infinity, _tileLayerMask))
       {
@@ -60,12 +60,14 @@ namespace Internal.Scripts.UI
         if (hit.collider.TryGetComponent(out TileController tileController))
         {
           var tile = tileController.Tile;
-          
-          bool isValidBuildLocation = tile.Type == Tile.TileType.Ground || 
-                                    tile.Type == Tile.TileType.ResourceTree ||
-                                    tile.Type == Tile.TileType.ResourceStone ||
-                                    tile.Type == Tile.TileType.ResourceDiamond;
-          
+            
+          // Проверяем, что тайл допускает строительство И не занят другим зданием
+          bool isValidBuildLocation = (tile.Type == Tile.TileType.Ground || 
+                                       tile.Type == Tile.TileType.ResourceTree ||
+                                       tile.Type == Tile.TileType.ResourceStone ||
+                                       tile.Type == Tile.TileType.ResourceDiamond) &&
+                                      !tile.IsOccupied; // Добавляем проверку на занятость
+            
           if (BuildMenuButton != null)
           {
             BuildMenuButton.interactable = isValidBuildLocation;
@@ -218,25 +220,22 @@ namespace Internal.Scripts.UI
               settings.GroundGeneratorSettings.MiscHeightOffset, 
               tile.Z * settings.GroundGeneratorSettings.DefaultTileSize
             );
-            // Debug.Log($"[BuildMenuController] Placing building at tile center: {tileCenter}");
-            
+    
             // Instantiate the building at the tile center
             Building placedBuilding = Instantiate(_selectedBuildingPrefab, tileCenter, Quaternion.identity);
-            // Debug.Log($"[BuildMenuController] Building instantiated: {placedBuilding?.name}");
-            
+    
             // Вычитаем ресурсы после успешного создания здания
             foreach (var cost in _selectedBuildingPrefab.CostResources)
             {
               ConsumeResources(cost.resourceId, cost.amount);
             }
-            
-            // Mark the tile as occupied by a building (you may need to update your Tile system to support this)
-            // Example: tile.OccupiedByBuilding = placedBuilding; (if you add this property to Tile)
-            
+    
+            // Устанавливаем флаг занятости тайла
+            tile.IsOccupied = true;
+    
             // Reset selection
             _selectedBuildingPrefab = null;
             _isBuildingSelected = false;
-            // Debug.Log("[BuildMenuController] Selection reset after placement");
           }
           else
           {

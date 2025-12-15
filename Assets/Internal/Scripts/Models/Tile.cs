@@ -24,6 +24,8 @@ namespace Internal.Scripts.Models
       South, // -Z
       West   // -X
     }
+    
+    public bool IsOccupied { get; set; } = false;
 
     public TileType Type;
     public TileDirection Direction;
