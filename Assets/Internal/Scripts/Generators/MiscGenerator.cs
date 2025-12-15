@@ -7,17 +7,30 @@ using Random = UnityEngine.Random;
 
 namespace Internal.Scripts.Generators
 {
+  /// <summary>
+  /// Генератор дополнительных объектов (декораций, препятствий, ресурсов) на карте
+  /// </summary>
   public class MiscGenerator : MonoBehaviour
   {
+    #region Свойства
+
     private static TileManager tileManager
     {
       get => TileManager.GetInstance();
     }
+    
     private static GroundGeneratorSettings settings
     {
       get => GameSettingsManager.GetInstance().Settings.GroundGeneratorSettings;
     }
 
+    #endregion
+
+    #region Методы Unity
+
+    /// <summary>
+    /// Вызывается при старте компонента, генерирует дополнительные объекты на карте
+    /// </summary>
     private void Start()
     {
       foreach (var tile in tileManager.Tiles.Values)
@@ -61,6 +74,7 @@ namespace Internal.Scripts.Generators
           default:
             throw new ArgumentOutOfRangeException();
         }
+        
         Instantiate(
           prefab,
           position,
@@ -68,7 +82,17 @@ namespace Internal.Scripts.Generators
           transform);
       }
     }
-    
+
+    #endregion
+
+    #region Вспомогательные методы
+
+    /// <summary>
+    /// Получает случайную позицию внутри тайла
+    /// </summary>
+    /// <param name="x">Координата X тайла</param>
+    /// <param name="z">Координата Z тайла</param>
+    /// <returns>Случайная позиция внутри тайла</returns>
     private static Vector3 GetRandomPositionOnTile(int x, int z)
     {
       var tileSize = settings.DefaultTileSize;
@@ -79,5 +103,7 @@ namespace Internal.Scripts.Generators
       
       return new Vector3(x * tileSize + randomX, settings.MiscHeightOffset, z * tileSize + randomZ);
     }
+
+    #endregion
   }
 }

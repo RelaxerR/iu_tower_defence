@@ -4,8 +4,15 @@ using UnityEngine;
 
 namespace Internal.Scripts.Controllers.Resources
 {
-  public class ResourceStone : ResourceDiamond
+  /// <summary>
+  /// Класс ресурса камня, наследующий базовую функциональность ресурса
+  /// </summary>
+  [RequireComponent(typeof(Renderer))]
+  public class ResourceStone : ResourceBasic
   {
+    /// <summary>
+    /// Возвращает идентификатор ресурса камня
+    /// </summary>
     public override string Id { get => ResourceSettings.StoneId; }
   }
 }
