@@ -40,7 +40,7 @@ namespace Internal.Scripts.Controllers.Enemies
       {
         _health = _settings.MaxHealth;
         _moveSpeed = _settings.Speed; // Предполагается, что Speed есть в EnemySettings
-        Debug.Log($"EnemyFox ({gameObject.name}): Initialized with Health: {_health}, Speed: {_moveSpeed}");
+        // Debug.Log($"EnemyFox ({gameObject.name}): Initialized with Health: {_health}, Speed: {_moveSpeed}");
       }
       else
       {
@@ -57,17 +57,19 @@ namespace Internal.Scripts.Controllers.Enemies
 
     public void Attack()
     {
-      Debug.Log($"{gameObject.name} is attacking the castle!");
+      // Debug.Log($"{gameObject.name} is attacking the castle!");
       // TODO: Реализуйте логику атаки
       // Остановим движение перед атакой
       _creatureMover.SetInput(Vector2.zero, transform.position, false, false);
       // Уничтожим врага после атаки (или реализуйте другую логику)
+      _targetCastle.TakeDamage(_settings.DamageAmount);
       Die();
     }
 
     public void TakeDamage(float damage)
     {
       _health -= damage;
+      Debug.Log($"{name}: Took {damage} damage. Remaining health: {_health}", this);
       if (_health <= 0)
       {
         Die();
@@ -76,7 +78,7 @@ namespace Internal.Scripts.Controllers.Enemies
 
     public void Die()
     {
-      Debug.Log($"EnemyFox ({gameObject.name}): Died.");
+      // Debug.Log($"EnemyFox ({gameObject.name}): Died.");
       // Возможно, стоит отключить CreatureMover при смерти
       if(_creatureMover != null)
         _creatureMover.enabled = false;
@@ -98,7 +100,7 @@ namespace Internal.Scripts.Controllers.Enemies
       }
       if (castle == null)
       {
-         Debug.Log($"EnemyFox ({gameObject.name}): SetTargetCastle called with null castle. Clearing target and stopping.", this);
+         // Debug.Log($"EnemyFox ({gameObject.name}): SetTargetCastle called with null castle. Clearing target and stopping.", this);
          _targetCastle = null;
          // Остановим движение
          if(_creatureMover != null)
@@ -109,11 +111,11 @@ namespace Internal.Scripts.Controllers.Enemies
       // Если цель уже назначена и совпадает с новой, можно просто выйти
       if (_targetCastle != null && _targetCastle == castle)
       {
-         Debug.Log($"EnemyFox ({gameObject.name}): Target castle is already assigned. Skipping reassignment.", this);
+         // Debug.Log($"EnemyFox ({gameObject.name}): Target castle is already assigned. Skipping reassignment.", this);
          return;
       }
 
-      Debug.Log($"EnemyFox ({gameObject.name}): SetTargetCastle called with {(castle != null ? "valid" : "null")} castle.");
+      // Debug.Log($"EnemyFox ({gameObject.name}): SetTargetCastle called with {(castle != null ? "valid" : "null")} castle.");
       _targetCastle = castle;
       if (_targetCastle != null)
       {
@@ -132,7 +134,7 @@ namespace Internal.Scripts.Controllers.Enemies
 
     private void CalculateAndStartPath()
     {
-      Debug.Log($"EnemyFox ({gameObject.name}): Calculating path...");
+      // Debug.Log($"EnemyFox ({gameObject.name}): Calculating path...");
       if (_targetCastle == null)
       {
         Debug.LogError("EnemyFox: Cannot calculate path without a target castle.", this);
@@ -154,7 +156,7 @@ namespace Internal.Scripts.Controllers.Enemies
       int targetX = Mathf.RoundToInt(_targetCastle.transform.position.x / settings.DefaultTileSize);
       int targetZ = Mathf.RoundToInt(_targetCastle.transform.position.z / settings.DefaultTileSize);
 
-      Debug.Log($"EnemyFox ({gameObject.name}): Calculating path from grid ({currentX}, {currentZ}) to grid ({targetX}, {targetZ})");
+      // Debug.Log($"EnemyFox ({gameObject.name}): Calculating path from grid ({currentX}, {currentZ}) to grid ({targetX}, {targetZ})");
 
       // Ищем путь
       _path = PathfindingService.FindPath(currentX, currentZ, targetX, targetZ);
@@ -162,7 +164,7 @@ namespace Internal.Scripts.Controllers.Enemies
       if (_path != null && _path.Count > 0)
       {
         _currentPathIndex = 0; // Начинаем с первого тайла в пути
-        Debug.Log($"EnemyFox ({gameObject.name}): Path found with {_path.Count} nodes. Starting movement.");
+        // Debug.Log($"EnemyFox ({gameObject.name}): Path found with {_path.Count} nodes. Starting movement.");
         // Устанавливаем первую цель - позиция первого тайла в пути
         SetNextWaypoint();
       }
@@ -198,7 +200,7 @@ namespace Internal.Scripts.Controllers.Enemies
       // Цель - центр тайла
       _targetPosition = new Vector3(x * tileSize, transform.position.y, z * tileSize); // Удерживаем Y от врага
 
-      Debug.Log($"EnemyFox ({gameObject.name}): Moving towards waypoint grid ({x}, {z}) at world pos {_targetPosition}, path index: {_currentPathIndex}");
+      // Debug.Log($"EnemyFox ({gameObject.name}): Moving towards waypoint grid ({x}, {z}) at world pos {_targetPosition}, path index: {_currentPathIndex}");
 
       // --- Ключевое изменение ---
       // Вместо вычисления inputAxis как вектора к цели, используем постоянное "вперед"
@@ -216,7 +218,7 @@ namespace Internal.Scripts.Controllers.Enemies
         // Проверяем, достиг ли враг текущей цели
         if (Vector3.Distance(transform.position, _targetPosition) <= _reachThreshold)
         {
-          Debug.Log($"EnemyFox ({gameObject.name}): Reached waypoint grid ({_path[_currentPathIndex].x}, {_path[_currentPathIndex].z}) at index {_currentPathIndex}");
+          // Debug.Log($"EnemyFox ({gameObject.name}): Reached waypoint grid ({_path[_currentPathIndex].x}, {_path[_currentPathIndex].z}) at index {_currentPathIndex}");
           _currentPathIndex++; // Переходим к следующему тайлу в пути
 
           if (_currentPathIndex < _path.Count)
@@ -227,7 +229,7 @@ namespace Internal.Scripts.Controllers.Enemies
           else
           {
             // Достигли последнего тайла в пути
-            Debug.Log($"EnemyFox ({gameObject.name}): Reached the end of the path.");
+            // Debug.Log($"EnemyFox ({gameObject.name}): Reached the end of the path.");
             // Проверяем, это замок?
             if (_targetCastle != null)
             {
@@ -235,7 +237,7 @@ namespace Internal.Scripts.Controllers.Enemies
               float distanceToCastle = Vector3.Distance(transform.position, _targetCastle.transform.position);
               if(distanceToCastle <= _reachThreshold + 0.5f) // Немного больше порога пути
               {
-                Debug.Log($"EnemyFox ({gameObject.name}): Close enough to castle at {_targetCastle.transform.position}. Attacking.");
+                // Debug.Log($"EnemyFox ({gameObject.name}): Close enough to castle at {_targetCastle.transform.position}. Attacking.");
                 Attack(); // Вызываем атаку
                 // CreatureMover остановится в методе Attack
               }
@@ -244,7 +246,7 @@ namespace Internal.Scripts.Controllers.Enemies
                 // Мы достигли последнего тайла в пути, но замок еще далеко.
                 // В реальности враг может "увидеть" замок и пойти прямо на него, или атаковать отсюда.
                 // Для простоты будем считать, что он достиг цели и атакует.
-                Debug.Log($"EnemyFox ({gameObject.name}): Reached path end near castle at {_targetCastle.transform.position}. Attacking (last path node).");
+                // Debug.Log($"EnemyFox ({gameObject.name}): Reached path end near castle at {_targetCastle.transform.position}. Attacking (last path node).");
                 Attack();
               }
             }
@@ -265,7 +267,7 @@ namespace Internal.Scripts.Controllers.Enemies
             // inputAxis (0, 1) означает "двигаться вперед локально"
             // _targetPosition - точка, к которой нужно повернуть
             _creatureMover.SetInput(new Vector2(0f, 1f), _targetPosition, true, false);
-            // Debug.Log($"Setting inputAxis: (0, 1), target: {_targetPosition}");
+            // // Debug.Log($"Setting inputAxis: (0, 1), target: {_targetPosition}");
           }
         }
       }

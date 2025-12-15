@@ -21,7 +21,7 @@ namespace Internal.Scripts.Pathfinding
 
         public static List<(int x, int z)> FindPath(int startX, int startZ, int endX, int endZ)
         {
-            Debug.Log($"PathfindingService: Starting pathfinding from ({startX}, {startZ}) to ({endX}, {endZ}).");
+            // Debug.Log($"PathfindingService: Starting pathfinding from ({startX}, {startZ}) to ({endX}, {endZ}).");
 
             var tileManager = TileManager.GetInstance();
             if (tileManager?.Tiles == null)
@@ -29,7 +29,7 @@ namespace Internal.Scripts.Pathfinding
                 Debug.LogError("PathfindingService: TileManager instance or Tiles dictionary is null.");
                 return null;
             }
-            Debug.Log($"PathfindingService: TileManager and Tiles dictionary are valid. Count: {tileManager.Tiles.Count}");
+            // Debug.Log($"PathfindingService: TileManager and Tiles dictionary are valid. Count: {tileManager.Tiles.Count}");
 
             // Проверяем, являются ли начальный и конечный тайлы проходимыми
             if (!IsWalkable(startX, startZ))
@@ -43,7 +43,7 @@ namespace Internal.Scripts.Pathfinding
                  return null; // Невозможно найти путь
             }
 
-            Debug.Log("PathfindingService: Start and End tiles are walkable. Proceeding with A*.");
+            // Debug.Log("PathfindingService: Start and End tiles are walkable. Proceeding with A*.");
 
             // --- Реализация A* с использованием MinHeap ---
             var openSet = new MinHeap<(int x, int z), float>(); // (координаты, fScore)
@@ -66,14 +66,14 @@ namespace Internal.Scripts.Pathfinding
                 }
 
                 var (current, _) = openSet.Dequeue(); // Извлекаем только элемент, игнорируя fScore
-                Debug.Log($"PathfindingService: Dequeued node ({current.x}, {current.z}), gScore: {gScore[current]}, fScore: {fScore[current]}, loop #{loopCounter}");
+                // Debug.Log($"PathfindingService: Dequeued node ({current.x}, {current.z}), gScore: {gScore[current]}, fScore: {fScore[current]}, loop #{loopCounter}");
 
                 if (current.x == endX && current.z == endZ)
                 {
-                    Debug.Log($"PathfindingService: Goal ({endX}, {endZ}) reached after {loopCounter} iterations!");
+                    // Debug.Log($"PathfindingService: Goal ({endX}, {endZ}) reached after {loopCounter} iterations!");
                     // Путь найден! Восстановим его.
                     var resultPath = ReconstructPath(cameFrom, current);
-                    Debug.Log($"PathfindingService: Path reconstructed, length: {resultPath.Count}");
+                    // Debug.Log($"PathfindingService: Path reconstructed, length: {resultPath.Count}");
                     return resultPath;
                 }
 
@@ -82,18 +82,18 @@ namespace Internal.Scripts.Pathfinding
                 // Проверяем соседей (вверх, вниз, влево, вправо)
                 foreach (var neighbor in GetNeighbors(current.x, current.z))
                 {
-                    Debug.Log($"PathfindingService: Checking neighbor ({neighbor.x}, {neighbor.z}) of ({current.x}, {current.z})");
+                    // Debug.Log($"PathfindingService: Checking neighbor ({neighbor.x}, {neighbor.z}) of ({current.x}, {current.z})");
 
                     if (closedSet.Contains(neighbor))
                     {
-                         Debug.Log($"PathfindingService: Neighbor ({neighbor.x}, {neighbor.z}) is in closed set, skipping.");
+                         // Debug.Log($"PathfindingService: Neighbor ({neighbor.x}, {neighbor.z}) is in closed set, skipping.");
                          continue;
                     }
 
 
                     if (!IsWalkable(neighbor.x, neighbor.z))
                     {
-                         Debug.Log($"PathfindingService: Neighbor ({neighbor.x}, {neighbor.z}) is not walkable, skipping.");
+                         // Debug.Log($"PathfindingService: Neighbor ({neighbor.x}, {neighbor.z}) is not walkable, skipping.");
                          continue; // Пропускаем непроходимые тайлы
                     }
 
@@ -104,13 +104,13 @@ namespace Internal.Scripts.Pathfinding
                     {
                         gScore[neighbor] = tentativeGScore;
                         newPathFound = true;
-                        Debug.Log($"PathfindingService: First time visiting ({neighbor.x}, {neighbor.z}), gScore: {tentativeGScore}");
+                        // Debug.Log($"PathfindingService: First time visiting ({neighbor.x}, {neighbor.z}), gScore: {tentativeGScore}");
                     }
                     else if (tentativeGScore < gScore[neighbor])
                     {
                         gScore[neighbor] = tentativeGScore;
                         newPathFound = true;
-                        Debug.Log($"PathfindingService: Found better path to ({neighbor.x}, {neighbor.z}), updated gScore: {tentativeGScore}");
+                        // Debug.Log($"PathfindingService: Found better path to ({neighbor.x}, {neighbor.z}), updated gScore: {tentativeGScore}");
                     }
 
                     if(newPathFound)
@@ -119,11 +119,11 @@ namespace Internal.Scripts.Pathfinding
                         cameFrom[neighbor] = current;
                         fScore[neighbor] = tentativeGScore + Heuristic(neighbor.x, neighbor.z, endX, endZ);
                         openSet.Enqueue(neighbor, fScore[neighbor]); // Добавляем в очередь
-                        Debug.Log($"PathfindingService: Added ({neighbor.x}, {neighbor.z}) to open set with fScore: {fScore[neighbor]}");
+                        // Debug.Log($"PathfindingService: Added ({neighbor.x}, {neighbor.z}) to open set with fScore: {fScore[neighbor]}");
                     }
                     else
                     {
-                        Debug.Log($"PathfindingService: Better path to ({neighbor.x}, {neighbor.z}) already exists, skipping.");
+                        // Debug.Log($"PathfindingService: Better path to ({neighbor.x}, {neighbor.z}) already exists, skipping.");
                     }
                 }
             }
@@ -137,7 +137,7 @@ namespace Internal.Scripts.Pathfinding
         {
             var tile = TileManager.GetInstance().Tiles.GetValueOrDefault((x, z));
             bool walkable = tile != null && WalkableTypes.Contains(tile.Type);
-            // Debug.Log($"IsWalkable({x}, {z}): {(tile != null ? tile.Type.ToString() : "NULL_TILE")}, Walkable: {walkable}");
+            // // Debug.Log($"IsWalkable({x}, {z}): {(tile != null ? tile.Type.ToString() : "NULL_TILE")}, Walkable: {walkable}");
             return walkable;
         }
 
@@ -160,7 +160,7 @@ namespace Internal.Scripts.Pathfinding
 
         private static List<(int x, int z)> ReconstructPath(Dictionary<(int x, int z), (int x, int z)> cameFrom, (int x, int z) current)
         {
-            Debug.Log("PathfindingService: Reconstructing path...");
+            // Debug.Log("PathfindingService: Reconstructing path...");
             var path = new List<(int x, int z)> { current };
             int count = 0; // Счетчик для безопасности
             while (cameFrom.ContainsKey(current) && count++ < 1000) // Защита от зацикливания
@@ -169,7 +169,7 @@ namespace Internal.Scripts.Pathfinding
                 path.Add(current);
             }
             path.Reverse(); // Путь был построен от цели к началу
-            Debug.Log("PathfindingService: Path reconstruction complete.");
+            // Debug.Log("PathfindingService: Path reconstruction complete.");
             return path;
         }
     }

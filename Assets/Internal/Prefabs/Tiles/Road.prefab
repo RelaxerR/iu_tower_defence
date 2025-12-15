@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 5753634542604228737}
   - component: {fileID: 7614594879010453073}
   - component: {fileID: 1553789461914658186}
-  m_Layer: 0
+  - component: {fileID: -2725797036809386798}
+  m_Layer: 6
   m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,3 +130,15 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 1.5, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &-2725797036809386798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114190999430904148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c93aee9db748c2af6e0a3781e04a9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Models.TileController

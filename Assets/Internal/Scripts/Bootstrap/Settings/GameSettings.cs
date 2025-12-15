@@ -15,6 +15,8 @@ namespace Internal.Scripts.Bootstrap.Settings
 
     #endregion
 
+    public float LevelMaxValue = 100f;
+    public float LevelDurationSeconds = 300f; // 5 minutes
   }
   
   [Serializable]
@@ -102,6 +104,12 @@ namespace Internal.Scripts.Bootstrap.Settings
     public float MoveSpeed = 5f;
     public float RotationSpeed = 720f; // Degrees per second
     
+    #endregion
+
+    #region Castle Settings
+
+    public float CastleMaxHealth = 100f;
+
     #endregion
   }
   

@@ -22,7 +22,6 @@ namespace Internal.Scripts.Bootstrap
     {
       GameSettingsManager.GetInstance();
       TileManager.GetInstance();
-      SceneManager.GetInstance().LoadGameSceneAsync();
     }
   }
 }

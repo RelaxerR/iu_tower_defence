@@ -24,7 +24,7 @@ namespace Internal.Scripts.Controllers.Player
     {
       if (CurrentResource == null) return;
       
-      Debug.Log($"Collecting resource: {CurrentResource.Id}, Amount left: {CurrentResource.Amount}");
+      // Debug.Log($"Collecting resource: {CurrentResource.Id}, Amount left: {CurrentResource.Amount}");
       var resourceId = CurrentResource.Id;
 
       CurrentResource.Collect();
@@ -42,7 +42,7 @@ namespace Internal.Scripts.Controllers.Player
       if (!other.TryGetComponent<IResource>(out var resource))
         return;
       
-      Debug.Log($"Entered resource area ({resource.Id})");
+      // Debug.Log($"Entered resource area ({resource.Id})");
       resource.OnSelected();
       CurrentResource = resource;
     }
@@ -51,7 +51,7 @@ namespace Internal.Scripts.Controllers.Player
       if (!other.TryGetComponent<IResource>(out var resource))
         return;
       
-      Debug.Log($"Exited resource area ({resource.Id})");
+      // Debug.Log($"Exited resource area ({resource.Id})");
       resource.OnDeselected();
       CurrentResource = null;
     }

@@ -39,7 +39,7 @@ MonoBehaviour:
     FreeRandomDiamondMin: 1
     FreeRandomDiamondMax: 3
     GroundTiles:
-    - {fileID: 7335699571591753109, guid: 8a0c20969ef868e4d9c7b04d079e6611, type: 3}
+    - {fileID: 7335699571591753109, guid: 74e4d80bf9e4549fcbb70f078d456f03, type: 3}
     GroundCornerTiles:
     - {fileID: 8582404040918290442, guid: d0693878a38dd40e08fa2c542db95367, type: 3}
     RoadTiles:
@@ -47,15 +47,15 @@ MonoBehaviour:
     RoadEndTiles:
     - {fileID: 6114190999430904148, guid: 2bbe23775457242719d80be5397ea4bb, type: 3}
     ResourceTreeTiles:
-    - {fileID: 5957245373432176809, guid: a7672c759ddfa15479841db19aed0c0e, type: 3}
+    - {fileID: 3066129052830138567, guid: 9e71187249b61443588d787fd1199c76, type: 3}
     ResourceStoneTiles:
-    - {fileID: 3203841511016326922, guid: 441456d5431a9a4428702255dd4f8476, type: 3}
+    - {fileID: 3203841511016326922, guid: 8c9b6a84bd8d8414589848c337e6e94d, type: 3}
     ResourceDiamondTiles:
-    - {fileID: 8184577537208582226, guid: 4d47db9e0318ca14793117d9d4255283, type: 3}
+    - {fileID: 8184577537208582226, guid: 4ab5232b14c784626a4d7d1625f8bc89, type: 3}
     CastleTiles:
-    - {fileID: 4729789481492352889, guid: 9b14a15ae211fb44baedf764ee16f103, type: 3}
+    - {fileID: 4729789481492352889, guid: 478a13f7578df49149160156855f6e45, type: 3}
     PlayerCastlePrefabs:
-    - {fileID: 573573865698385911, guid: 8ae2fde55ebce4283a79c0349b081222, type: 3}
+    - {fileID: 8997651991179373370, guid: 8ae2fde55ebce4283a79c0349b081222, type: 3}
     TreeResourcePrefabs:
     - {fileID: 453970571419920900, guid: 6564f89dfb84e1d4eb0b36a119363149, type: 3}
     StoneResourcePrefabs:
@@ -111,6 +111,7 @@ MonoBehaviour:
   PlayerSettings:
     MoveSpeed: 20
     RotationSpeed: 720
+    CastleMaxHealth: 1000
   CameraSettings:
     CameraOffset: {x: 0, y: 10, z: -5}
     CameraFollowSpeed: 5
@@ -118,3 +119,5 @@ MonoBehaviour:
     BoundsMaxZModifier: -4
     BoundsMinXModifier: 2
     BoundsMaxXModifier: -2
+  LevelMaxValue: 100
+  LevelDurationSeconds: 300

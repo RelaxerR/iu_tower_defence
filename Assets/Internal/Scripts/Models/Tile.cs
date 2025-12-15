@@ -1,5 +1,9 @@
+using System;
+using UnityEngine;
+
 namespace Internal.Scripts.Models
 {
+  [Serializable]
   public class Tile
   {
     public enum TileType
@@ -20,6 +24,8 @@ namespace Internal.Scripts.Models
       South, // -Z
       West   // -X
     }
+    
+    public bool IsOccupied { get; set; } = false;
 
     public TileType Type;
     public TileDirection Direction;

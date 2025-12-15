@@ -20,7 +20,7 @@ namespace Internal.Scripts.Controllers.Resources
     public virtual void Collect()
     {
       Amount--;
-      Debug.Log($"Collected resource: {Id}, Amount left: {Amount}");
+      // Debug.Log($"Collected resource: {Id}, Amount left: {Amount}");
     }
     public virtual void OnSelected()
     {
