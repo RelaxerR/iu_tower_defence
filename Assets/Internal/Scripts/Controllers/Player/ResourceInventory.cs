@@ -31,5 +31,11 @@ namespace Internal.Scripts.Controllers.Player
       
       OnResourceAmountChanged?.Invoke(resourceId, resourceAmounts[resourceId]);
     }
+    
+    // Новый метод для получения текущего количества ресурса
+    public int GetResourceAmount(string resourceId)
+    {
+      return resourceAmounts.ContainsKey(resourceId) ? resourceAmounts[resourceId] : 0;
+    }
   }
 }

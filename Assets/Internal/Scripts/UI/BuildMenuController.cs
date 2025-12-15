@@ -1,5 +1,6 @@
 using Internal.Scripts.Bootstrap;
 using Internal.Scripts.Controllers.Buildings;
+using Internal.Scripts.Controllers.Player;
 using Internal.Scripts.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,9 @@ namespace Internal.Scripts.UI
     
     private Building _selectedBuildingPrefab;
     private bool _isBuildingSelected = false;
+    
+    [SerializeField]
+    private ResourceInventory _resourceInventory; // Ссылка на инвентарь ресурсов
 
     private void Start()
     {
@@ -133,8 +137,22 @@ namespace Internal.Scripts.UI
       }
     }
     
+    private bool CheckResourceAmount(string resourceId, int requiredAmount)
+    {
+      if (_resourceInventory == null) return false;
+      return _resourceInventory.GetResourceAmount(resourceId) >= requiredAmount;
+    }
+    
     public void SelectBuilding(Building buildingPrefab)
     {
+      foreach (var cost in buildingPrefab.CostResources)
+      {
+        if (!CheckResourceAmount(cost.resourceId, cost.amount))
+        {
+          // Debug.Log($"[BuildMenuController] Not enough resources to build {buildingPrefab.name}");
+          return; // Not enough resources
+        }
+      }
       // Debug.Log($"[BuildMenuController] SelectBuilding called with prefab: {buildingPrefab?.name}");
       
       _selectedBuildingPrefab = buildingPrefab;
@@ -183,14 +201,34 @@ namespace Internal.Scripts.UI
           
           if (isValidBuildLocation)
           {
+            // Проверяем, достаточно ли ресурсов перед постройкой (дублируем проверку из SelectBuilding)
+            foreach (var cost in _selectedBuildingPrefab.CostResources)
+            {
+              if (!CheckResourceAmount(cost.resourceId, cost.amount))
+              {
+                // Debug.Log($"[BuildMenuController] Not enough resources to build {_selectedBuildingPrefab.name}");
+                return; // Not enough resources
+              }
+            }
+            
             // Calculate the center position of the tile
             var settings = GameSettingsManager.GetInstance().Settings;
-            Vector3 tileCenter = new Vector3(tile.X * settings.GroundGeneratorSettings.DefaultTileSize, settings.GroundGeneratorSettings.MiscHeightOffset, tile.Z * settings.GroundGeneratorSettings.DefaultTileSize); // Y position might need adjustment based on your setup
+            Vector3 tileCenter = new Vector3(
+              tile.X * settings.GroundGeneratorSettings.DefaultTileSize, 
+              settings.GroundGeneratorSettings.MiscHeightOffset, 
+              tile.Z * settings.GroundGeneratorSettings.DefaultTileSize
+            );
             // Debug.Log($"[BuildMenuController] Placing building at tile center: {tileCenter}");
             
             // Instantiate the building at the tile center
             Building placedBuilding = Instantiate(_selectedBuildingPrefab, tileCenter, Quaternion.identity);
             // Debug.Log($"[BuildMenuController] Building instantiated: {placedBuilding?.name}");
+            
+            // Вычитаем ресурсы после успешного создания здания
+            foreach (var cost in _selectedBuildingPrefab.CostResources)
+            {
+              ConsumeResources(cost.resourceId, cost.amount);
+            }
             
             // Mark the tile as occupied by a building (you may need to update your Tile system to support this)
             // Example: tile.OccupiedByBuilding = placedBuilding; (if you add this property to Tile)
@@ -213,6 +251,18 @@ namespace Internal.Scripts.UI
       else
       {
         // Debug.Log("[BuildMenuController] Cannot place building - raycast failed");
+      }
+    }
+
+    // Новый приватный метод для вычитания ресурсов из инвентаря
+    private void ConsumeResources(string resourceId, int amount)
+    {
+      if (_resourceInventory == null) return;
+      
+      // Вызываем OnResourceDropped нужное количество раз для вычитания ресурсов
+      for (int i = 0; i < amount; i++)
+      {
+        _resourceInventory.OnResourceDropped(resourceId);
       }
     }
   }
