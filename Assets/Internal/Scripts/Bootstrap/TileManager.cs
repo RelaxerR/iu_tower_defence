@@ -15,41 +15,42 @@ namespace Internal.Scripts.Bootstrap
   /// </summary>
   public class TileManager : MonoBehaviour
   {
-    #region Fields
+    #region Поля
 
     /// <summary>
     /// Словарь всех тайлов на карте, индексированных по координатам (x, z).
     /// </summary>
     public readonly Dictionary<(int x, int z), Tile> Tiles = new();
 
-    private static GroundGeneratorSettings settings => GameSettingsManager.GetInstance().Settings.GroundGeneratorSettings;
+    private static GroundGeneratorSettings settings
+    {
+      get => GameSettingsManager.GetInstance().Settings.GroundGeneratorSettings;
+    }
 
     private static TileManager _instance;
 
     #endregion
 
-    #region Unity Lifecycle
+    #region Жизненный цикл Unity
 
     private void Awake()
     {
       DontDestroyOnLoad(gameObject);
       _instance = this;
-      // Debug.Log("TileManager initialized");
     }
 
     #endregion
 
-    #region Public Methods
+    #region Публичные методы
 
     /// <summary>
     /// Инициализирует тайлы на карте: размещает замок и генерирует дороги от него.
     /// </summary>
+    /// <param name="level">Уровень сложности, влияющий на количество дорог и ресурсов</param>
     public void InitTiles(int level)
     {
-      // Debug.Log("Initializing tiles...");
       var castleTile = GetCastleTile();
       Tiles.Add(castleTile.pos, castleTile.tile);
-      // Debug.Log($"Initialized castle tile at position: {castleTile.pos}");
       
       CreateRoadFromCastle(castleTile.pos, North);
       if (level > settings.RoadLevelRequirement2) CreateRoadFromCastle(castleTile.pos, South);
@@ -57,15 +58,13 @@ namespace Internal.Scripts.Bootstrap
       if (level > settings.RoadLevelRequirement4) CreateRoadFromCastle(castleTile.pos, East);
       
       InitResources(level);
-      
-      // Debug.Log($"Total tiles created: {Tiles.Count}");
-
       FillGroundTiles();
     }
 
     /// <summary>
     /// Возвращает экземпляр TileManager.
     /// </summary>
+    /// <returns>Единственный экземпляр TileManager в сцене</returns>
     public static TileManager GetInstance()
     {
       _instance ??= FindFirstObjectByType<TileManager>();
@@ -74,8 +73,11 @@ namespace Internal.Scripts.Bootstrap
 
     #endregion
 
-    #region Private Methods - Tile Creation
+    #region Приватные методы - Создание тайлов
 
+    /// <summary>
+    /// Заполняет пустые места на карте тайлами земли
+    /// </summary>
     private void FillGroundTiles()
     {
       for (var x = -settings.MapSizeX; x <= settings.MapSizeX; x++)
@@ -90,12 +92,23 @@ namespace Internal.Scripts.Bootstrap
         }
       }
     }
+
+    /// <summary>
+    /// Инициализирует тайлы ресурсов на карте
+    /// </summary>
+    /// <param name="level">Уровень игры, влияющий на количество ресурсов</param>
     private void InitResources(int level)
     {
       InitResourceTiles(ResourceTree, Mathf.CeilToInt(level * settings.TreeLevelModifier) + Random.Range(settings.FreeRandomTreeMin, settings.FreeRandomTreeMax));
       InitResourceTiles(ResourceStone, Mathf.CeilToInt(level * settings.StoneLevelModifier) + Random.Range(settings.FreeRandomStoneMin, settings.FreeRandomStoneMax));
       InitResourceTiles(ResourceDiamond, Mathf.CeilToInt(level * settings.DiamondLevelModifier) + Random.Range(settings.FreeRandomDiamondMin, settings.FreeRandomDiamondMax));
     }
+
+    /// <summary>
+    /// Инициализирует тайлы конкретного типа ресурса
+    /// </summary>
+    /// <param name="type">Тип ресурса</param>
+    /// <param name="amount">Количество тайлов ресурса</param>
     private void InitResourceTiles(Tile.TileType type, int amount)
     {
       for (var i = 0; i < amount; i++)
@@ -105,20 +118,30 @@ namespace Internal.Scripts.Bootstrap
         var tile = new Tile(type, posX, posZ, North);
         if (Tiles.TryAdd((posX, posZ), tile))
         {
-          // Debug.Log($"Added resource tile of type {type} at ({posX}, {posZ})");
+          // Тайл успешно добавлен
         }
         else
         {
-          Debug.LogError($"Could not add resource tile at ({posX}, {posZ}), already occupied by {Tiles[(posX, posZ)].Type} - position was not free");
+          Debug.LogError($"Не удалось добавить тайл ресурса в ({posX}, {posZ}), уже занято тайлом {Tiles[(posX, posZ)].Type} - позиция была занята");
         }
       }
     }
+
+    /// <summary>
+    /// Получает случайную позицию в пределах карты
+    /// </summary>
+    /// <returns>Кортеж с координатами (x, z)</returns>
     private static (int x, int z) GetRandomPosition()
     {
       var posX = Mathf.RoundToInt(Random.Range(-settings.MapSizeX, settings.MapSizeX));
       var posZ = Mathf.RoundToInt(Random.Range(-settings.MapSizeZ, settings.MapSizeZ));
       return (posX, posZ);
     }
+
+    /// <summary>
+    /// Получает свободную случайную позицию на карте
+    /// </summary>
+    /// <returns>Кортеж с координатами (x, z) свободной позиции</returns>
     private (int x, int z) GetFreeRandomPosition()
     {
       var attempt = 0;
@@ -132,24 +155,32 @@ namespace Internal.Scripts.Bootstrap
         if (attempt <= settings.CreationAttemptLimit)
           continue;
         
-        Debug.LogWarning("Exceeded maximum attempts to find free position for resource");
+        Debug.LogWarning("Превышено максимальное количество попыток найти свободную позицию для ресурса");
         return pos;
 
       } while (Tiles.ContainsKey(pos));
       
       return pos;
     }
+
+    /// <summary>
+    /// Получает тайл замка с случайной позицией
+    /// </summary>
+    /// <returns>Кортеж с позицией и тайлом замка</returns>
     private static ((int x, int z) pos, Tile tile) GetCastleTile()
     {
       var posX = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDeltaX, settings.CastleMaxPositionDeltaX));
       var posZ = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDeltaZ, settings.CastleMaxPositionDeltaZ));
-      // Debug.Log($"Generating castle at position: ({posX}, {posZ})");
       return ((posX, posZ), new Tile(Castle, posX, posZ, North));
     }
 
+    /// <summary>
+    /// Создаёт дорогу от замка в заданном направлении
+    /// </summary>
+    /// <param name="castlePos">Позиция замка</param>
+    /// <param name="initialDirection">Начальное направление дороги</param>
     private void CreateRoadFromCastle((int x, int z) castlePos, Tile.TileDirection initialDirection)
     {
-      // Debug.Log($"Creating road from castle at {castlePos} in direction {initialDirection}");
       var startPos = GetNextPosition(castlePos.x, castlePos.z, initialDirection);
       var startRotation = GetRotationForDirection(initialDirection);
 
@@ -159,29 +190,29 @@ namespace Internal.Scripts.Bootstrap
     /// <summary>
     /// Создаёт сегмент дороги с поворотами.
     /// </summary>
+    /// <param name="startX">Начальная координата X</param>
+    /// <param name="startZ">Начальная координата Z</param>
+    /// <param name="initialDirection">Начальное направление дороги</param>
+    /// <param name="initialRotation">Начальный угол поворота</param>
     private void CreateRoadWithTurns(int startX, int startZ, Tile.TileDirection initialDirection, int initialRotation)
     {
-      // Debug.Log($"Starting road creation from ({startX}, {startZ}) in direction {initialDirection}");
-      
       var currentX = startX;
       var currentZ = startZ;
       var prevCurrentX = startX;
       var prevCurrentZ = startZ;
-      bool isRechedBounds = false;
+      bool isReachedBounds = false;
       var currentDirection = initialDirection;
       var excludedDirection = GetOpposite(initialDirection);
       var currentRotation = initialRotation;
       Tile.TileDirection? previousTurnDirection = null;
 
       var turnsCount = Random.Range(settings.RoadMinTurns, settings.RoadMaxTurns + 1);
-      // Debug.Log($"Road will have {turnsCount} turns");
 
       for (var turn = 0; turn < turnsCount; turn++)
       {
         if (IsOutOfMapBounds(currentX, currentZ))
         {
-          // Debug.Log($"Road stopped at ({currentX}, {currentZ}) - out of bounds");
-          isRechedBounds = true;
+          isReachedBounds = true;
           break;
         }
 
@@ -190,12 +221,10 @@ namespace Internal.Scripts.Bootstrap
         if (turn == turnsCount - 1)
         {
           segmentLength = GetMaxLengthToBoundary(currentX, currentZ, currentDirection);
-          // Debug.Log($"Last segment length adjusted to {segmentLength} to reach map boundary");
           currentDirection = initialDirection;
           currentRotation = GetRotationForDirection(currentDirection);
         }
 
-        // Debug.Log($"Creating road segment #{turn + 1}: length={segmentLength}, direction={currentDirection}");
         var (endX, endZ) = CreateStraightRoadSegment(currentX, currentZ, currentDirection, segmentLength, currentRotation);
         prevCurrentX = currentX;
         prevCurrentZ = currentZ;
@@ -210,21 +239,26 @@ namespace Internal.Scripts.Bootstrap
           : new[] { excludedDirection };
 
         var nextDirection = GetNextDirection(currentDirection, excludedDirections);
-        // Debug.Log($"Next turn direction: {nextDirection}");
         previousTurnDirection = nextDirection;
         currentDirection = nextDirection;
         currentRotation = GetRotationForDirection(currentDirection);
       }
       
-      if (isRechedBounds) Tiles[(prevCurrentX, prevCurrentZ)].Type = RoadEnd;
-      else Tiles[(currentX, currentZ)].Type = RoadEnd;
-      
-      // Debug.Log($"Finished road creation ending at ({currentX}, {currentZ})");
+      if (isReachedBounds) 
+        Tiles[(prevCurrentX, prevCurrentZ)].Type = RoadEnd;
+      else 
+        Tiles[(currentX, currentZ)].Type = RoadEnd;
     }
 
     /// <summary>
     /// Создаёт прямой сегмент дороги заданной длины.
     /// </summary>
+    /// <param name="startX">Начальная координата X</param>
+    /// <param name="startZ">Начальная координата Z</param>
+    /// <param name="direction">Направление дороги</param>
+    /// <param name="length">Длина сегмента</param>
+    /// <param name="rotation">Угол поворота тайла</param>
+    /// <returns>Координаты конечной точки сегмента</returns>
     private (int endX, int endZ) CreateStraightRoadSegment(
       int startX,
       int startZ,
@@ -232,8 +266,6 @@ namespace Internal.Scripts.Bootstrap
       int length,
       int rotation)
     {
-      // Debug.Log($"Creating straight road segment from ({startX}, {startZ}), direction={direction}, length={length}");
-      
       int endX = startX, endZ = startZ;
 
       for (var i = 0; i < length; i++)
@@ -242,7 +274,6 @@ namespace Internal.Scripts.Bootstrap
 
         if (IsOutOfMapBounds(x, z))
         {
-          // Debug.Log($"Road segment stopped at ({x}, {z}) - out of bounds");
           break;
         }
 
@@ -258,35 +289,32 @@ namespace Internal.Scripts.Bootstrap
             {
               existingTile.Type = RoadCorner;
               existingTile.Rotation = GetCornerRotation(existingTile.Direction, direction);
-              // Debug.Log($"Updated tile at ({x}, {z}) to corner: {existingTile.Direction} -> {direction}, rotation={existingTile.Rotation}");
-            }
-            else
-            {
-              // Debug.Log($"Tile at ({x}, {z}) already exists with same direction, skipping");
             }
           }
           else
           {
-            Debug.LogWarning($"Could not add tile at ({x}, {z}), already occupied by {Tiles[(x, z)].Type}");
+            Debug.LogWarning($"Не удалось добавить тайл в ({x}, {z}), уже занят тайлом {Tiles[(x, z)].Type}");
           }
-        }
-        else
-        {
-          // Debug.Log($"Added road tile at ({x}, {z}) with rotation {rotation}");
         }
 
         endX = x;
         endZ = z;
       }
 
-      // Debug.Log($"Road segment completed, ending at ({endX}, {endZ})");
       return (endX, endZ);
     }
 
     #endregion
 
-    #region Private Methods - Direction Utilities
+    #region Приватные методы - Вспомогательные функции направления
 
+    /// <summary>
+    /// Получает максимальную длину до границы карты в заданном направлении
+    /// </summary>
+    /// <param name="x">Координата X</param>
+    /// <param name="z">Координата Z</param>
+    /// <param name="direction">Направление</param>
+    /// <returns>Максимальная длина до границы</returns>
     private static int GetMaxLengthToBoundary(int x, int z, Tile.TileDirection direction)
     {
       var maxLength = direction switch
@@ -295,10 +323,15 @@ namespace Internal.Scripts.Bootstrap
         East or West => settings.MapSizeX - Mathf.Abs(x),
         _ => 1
       };
-      // Debug.Log($"Max length to boundary from ({x}, {z}) in direction {direction}: {maxLength}");
       return maxLength;
     }
 
+    /// <summary>
+    /// Получает угол поворота для углового тайла дороги
+    /// </summary>
+    /// <param name="from">Направление входа</param>
+    /// <param name="to">Направление выхода</param>
+    /// <returns>Угол поворота в градусах</returns>
     private static int GetCornerRotation(Tile.TileDirection from, Tile.TileDirection to)
     {
       var rotation = (from, to) switch
@@ -313,10 +346,16 @@ namespace Internal.Scripts.Bootstrap
         (East, South) => 0,
         _ => 180
       };
-      // Debug.Log($"Corner rotation for {from} -> {to}: {rotation}");
       return rotation;
     }
 
+    /// <summary>
+    /// Получает следующую позицию в заданном направлении
+    /// </summary>
+    /// <param name="x">Текущая координата X</param>
+    /// <param name="z">Текущая координата Z</param>
+    /// <param name="direction">Направление</param>
+    /// <returns>Кортеж с новыми координатами (x, z)</returns>
     private static (int x, int z) GetNextPosition(int x, int z, Tile.TileDirection direction)
     {
       var pos = direction switch
@@ -327,10 +366,17 @@ namespace Internal.Scripts.Bootstrap
         West => (x - 1, z),
         _ => (x, z)
       };
-      // Debug.Log($"Next position from ({x}, {z}) in direction {direction}: ({pos.Item1}, {pos.Item2})");
       return pos;
     }
 
+    /// <summary>
+    /// Получает позицию на заданном расстоянии в указанном направлении
+    /// </summary>
+    /// <param name="startX">Начальная координата X</param>
+    /// <param name="startZ">Начальная координата Z</param>
+    /// <param name="direction">Направление</param>
+    /// <param name="distance">Расстояние</param>
+    /// <returns>Кортеж с координатами в нужной точке</returns>
     private static (int x, int z) GetPositionAtDistance(int startX, int startZ, Tile.TileDirection direction, int distance)
     {
       var pos = direction switch
@@ -344,6 +390,11 @@ namespace Internal.Scripts.Bootstrap
       return pos;
     }
 
+    /// <summary>
+    /// Получает угол поворота для заданного направления
+    /// </summary>
+    /// <param name="direction">Направление</param>
+    /// <returns>Угол поворота в градусах</returns>
     private static int GetRotationForDirection(Tile.TileDirection direction)
     {
       var rotation = direction switch
@@ -351,13 +402,17 @@ namespace Internal.Scripts.Bootstrap
         North => 90,
         East => 180,
         South => 270,
-        West => 0,
         _ => 0
       };
-      // Debug.Log($"Rotation for direction {direction}: {rotation}");
       return rotation;
     }
 
+    /// <summary>
+    /// Получает следующее направление, исключая указанные
+    /// </summary>
+    /// <param name="currentDirection">Текущее направление</param>
+    /// <param name="excludedDirections">Массив исключенных направлений</param>
+    /// <returns>Случайное допустимое направление</returns>
     private static Tile.TileDirection GetNextDirection(Tile.TileDirection currentDirection, Tile.TileDirection[] excludedDirections)
     {
       var allDirections = (Tile.TileDirection[])Enum.GetValues(typeof(Tile.TileDirection));
@@ -365,13 +420,15 @@ namespace Internal.Scripts.Bootstrap
         .Where(dir => dir != currentDirection && dir != GetOpposite(currentDirection) && !excludedDirections.Contains(dir))
         .ToList();
       
-      // Debug.Log($"Current direction: {currentDirection}, Excluded: [{string.Join(", ", excludedDirections)}], Valid: [{string.Join(", ", validDirections)}]");
-      
       var nextDirection = validDirections[Random.Range(0, validDirections.Count)];
-      // Debug.Log($"Selected next direction: {nextDirection}");
       return nextDirection;
     }
 
+    /// <summary>
+    /// Получает противоположное направление
+    /// </summary>
+    /// <param name="dir">Исходное направление</param>
+    /// <returns>Противоположное направление</returns>
     private static Tile.TileDirection GetOpposite(Tile.TileDirection dir)
     {
       var opposite = dir switch
@@ -382,21 +439,22 @@ namespace Internal.Scripts.Bootstrap
         West => East,
         _ => dir
       };
-      // Debug.Log($"Opposite of {dir} is {opposite}");
       return opposite;
     }
 
     #endregion
 
-    #region Private Methods - Validation
+    #region Приватные методы - Валидация
 
+    /// <summary>
+    /// Проверяет, находится ли позиция за пределами карты
+    /// </summary>
+    /// <param name="x">Координата X</param>
+    /// <param name="z">Координата Z</param>
+    /// <returns>true если позиция за пределами карты, иначе false</returns>
     private static bool IsOutOfMapBounds(int x, int z)
     {
       var outOfBounds = Mathf.Abs(x) > settings.MapSizeX || Mathf.Abs(z) > settings.MapSizeZ;
-      if (outOfBounds)
-      {
-        // Debug.Log($"Position ({x}, {z}) is out of map bounds");
-      }
       return outOfBounds;
     }
 

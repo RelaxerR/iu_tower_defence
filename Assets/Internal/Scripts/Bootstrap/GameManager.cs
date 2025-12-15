@@ -6,21 +6,36 @@ using UnityEngine.Events;
 
 namespace Internal.Scripts.Bootstrap
 {
+  /// <summary>
+  /// Менеджер управления состоянием игры и прогрессом уровня
+  /// </summary>
   public class GameManager : MonoBehaviour
   {
     [CanBeNull]
     private static GameManager Instance;
+
+    /// <summary>
+    /// Возвращает экземпляр менеджера игры, создавая его при необходимости
+    /// </summary>
+    /// <returns>Единственный экземпляр GameManager в сцене</returns>
     public static GameManager GetInstance()
     {
       Instance ??= FindFirstObjectByType<GameManager>();
       return Instance;
     }
     
+    /// <summary>
+    /// Вызывается при активации объекта, обеспечивает сохранение между сценами
+    /// </summary>
     private void Awake()
     {
+      // Не уничтожаем объект при загрузке новой сцены
       DontDestroyOnLoad(gameObject);
     }
 
+    /// <summary>
+    /// Вызывается при старте компонента, инициализирует корутину прогресса уровня
+    /// </summary>
     private void Start()
     {
       var levelMaxValue = GameSettingsManager.GetInstance().Settings.LevelMaxValue;
@@ -28,18 +43,47 @@ namespace Internal.Scripts.Bootstrap
       StartCoroutine(LevelProgressCoroutine(levelMaxValue, levelDuration));
     }
 
+    /// <summary>
+    /// Перечисление возможных состояний игры
+    /// </summary>
     public enum GameState
     {
+      /// <summary>
+      /// Меню игры
+      /// </summary>
       Menu,
+      
+      /// <summary>
+      /// Игровой процесс
+      /// </summary>
       Game,
+      
+      /// <summary>
+      /// Пауза в игре
+      /// </summary>
       Paused,
+      
+      /// <summary>
+      /// Победа игрока
+      /// </summary>
       GameWin,
+      
+      /// <summary>
+      /// Поражение игрока
+      /// </summary>
       GameLoose
     }
     
+    /// <summary>
+    /// Событие, вызываемое при изменении состояния игры
+    /// </summary>
     public UnityEvent<GameState> OnGameStateChanged;
+    
     private GameState currentGameState = GameState.Menu;
     
+    /// <summary>
+    /// Текущее состояние игры
+    /// </summary>
     public GameState CurrentGameState
     {
       get => currentGameState;
@@ -48,16 +92,24 @@ namespace Internal.Scripts.Bootstrap
         if (currentGameState == value) return;
         currentGameState = value;
         OnGameStateChanged?.Invoke(currentGameState);
-        // Debug.Log($"Game state changed to: {currentGameState}");
       }
     }
 
+    /// <summary>
+    /// Запускает игровой процесс
+    /// </summary>
     public void StartGame()
     {
       CurrentGameState = GameState.Game;
       SceneManager.GetInstance().LoadGameSceneAsync();
     }
 
+    /// <summary>
+    /// Корутина, управляющая прогрессом уровня со временем
+    /// </summary>
+    /// <param name="targetProgress">Целевое значение прогресса</param>
+    /// <param name="duration">Продолжительность прогресса в секундах</param>
+    /// <returns>IEnumerator для корутины</returns>
     private IEnumerator LevelProgressCoroutine(float targetProgress, float duration)
     {
       const float startProgress = 0f;
@@ -75,6 +127,9 @@ namespace Internal.Scripts.Bootstrap
       CurrentGameState = GameState.GameWin;
     }
 
+    /// <summary>
+    /// Событие, вызываемое при изменении прогресса уровня
+    /// </summary>
     public UnityEvent<float> OnLevelProgressChanged;
   }
 }
