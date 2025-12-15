@@ -3,10 +3,22 @@ using UnityEngine;
 
 namespace Internal.Scripts.Controllers.Buildings
 {
+  /// <summary>
+  /// Класс, представляющий стоимость ресурса для строительства или улучшения здания
+  /// </summary>
   [Serializable]
   public class ResourceCost
   {
-    public string resourceId; // Например, "wood", "stone", "diamond"
-    public int amount;        // Количество требуемого ресурса
+    /// <summary>
+    /// Идентификатор ресурса (например, "wood", "stone", "diamond")
+    /// </summary>
+    [Tooltip("Идентификатор ресурса (например, \"wood\", \"stone\", \"diamond\")")]
+    public string resourceId;
+
+    /// <summary>
+    /// Количество требуемого ресурса
+    /// </summary>
+    [Tooltip("Количество требуемого ресурса")]
+    public int amount;
   }
 }

@@ -8,12 +8,20 @@ using UnityEngine;
 
 namespace Internal.Scripts.Controllers.Enemies
 {
+  /// <summary>
+  /// Класс спавнера врагов, управляющий генерацией врагов с изменяющимся интервалом
+  /// </summary>
   public class EnemySpawner : MonoBehaviour
   {
+    #region Поля и свойства
+
+    /// <summary>
+    /// Список заспавненных врагов
+    /// </summary>
     public List<GameObject> SpawnedList;
     
     [SerializeField]
-    private List<GameObject> EnemyList = new List<GameObject>();
+    private List<GameObject> EnemyList = new();
 
     [SerializeField, Min(0.1f)]
     private float initialSpawnInterval = 2f; // начальный интервал в секундах
@@ -29,25 +37,31 @@ namespace Internal.Scripts.Controllers.Enemies
 
     private Coroutine spawnCoroutine;
     private float currentSpawnInterval; // текущий интервал спавна
-    private int spawnCount = 0; // количество заспавненных врагов
-    
+
     [CanBeNull]
     private CastleController targetCastle;
 
+    #endregion
+
+    #region Методы Unity
+
+    /// <summary>
+    /// Вызывается при старте компонента, инициализирует спавнер
+    /// </summary>
     private void Start()
     {
       ResetSpawner(); // инициализируем начальные значения
       
       if (EnemyList == null || EnemyList.Count == 0)
       {
-        Debug.LogError("EnemySpawner: EnemyList is empty!", this);
+        Debug.LogError("EnemySpawner: EnemyList пуст!", this);
         return;
       }
       
       targetCastle = FindAnyObjectByType<CastleController>();
       if (!targetCastle)
       {
-        Debug.LogError("EnemySpawner: No CastleController found in the scene!", this);
+        Debug.LogError("EnemySpawner: Замок не найден в сцене!", this);
         return;
       }
       StartSpawning();
@@ -65,12 +79,32 @@ namespace Internal.Scripts.Controllers.Enemies
       });
     }
 
+    /// <summary>
+    /// Вызывается при деактивации компонента, останавливает спавн
+    /// </summary>
+    private void OnDisable()
+    {
+      if (spawnCoroutine == null) return;
+      
+      StopCoroutine(spawnCoroutine);
+      spawnCoroutine = null;
+    }
+
+    #endregion
+
+    #region Методы управления спавном
+
+    /// <summary>
+    /// Сбрасывает параметры спавнера к начальным значениям
+    /// </summary>
     private void ResetSpawner()
     {
       currentSpawnInterval = initialSpawnInterval;
-      spawnCount = 0;
     }
 
+    /// <summary>
+    /// Останавливает процесс спавна врагов
+    /// </summary>
     private void StopSpawning()
     {
       if (spawnCoroutine != null)
@@ -81,6 +115,9 @@ namespace Internal.Scripts.Controllers.Enemies
       gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Запускает процесс спавна врагов
+    /// </summary>
     private void StartSpawning()
     {
       if (spawnCoroutine != null)
@@ -89,6 +126,14 @@ namespace Internal.Scripts.Controllers.Enemies
       spawnCoroutine = StartCoroutine(SpawnLoop());
     }
 
+    #endregion
+
+    #region Методы спавна
+
+    /// <summary>
+    /// Корутина, управляющая циклом спавна врагов
+    /// </summary>
+    /// <returns>IEnumerator для корутины</returns>
     private IEnumerator SpawnLoop()
     {
       while (true)
@@ -99,11 +144,14 @@ namespace Internal.Scripts.Controllers.Enemies
         
         // Уменьшаем интервал после спавна, но не ниже минимума
         currentSpawnInterval = Mathf.Max(minSpawnInterval, currentSpawnInterval - intervalDecreasePerSpawn);
-        spawnCount++;
       }
+      // ReSharper disable once IteratorNeverReturns
     }
 
-    // Внутри метода SpawnRandomEnemy() в EnemySpawner.cs
+    // ReSharper disable Unity.PerformanceAnalysis
+    /// <summary>
+    /// Спавнит случайного врага из списка
+    /// </summary>
     private void SpawnRandomEnemy()
     {
       if (EnemyList.Count == 0) return;
@@ -112,29 +160,23 @@ namespace Internal.Scripts.Controllers.Enemies
       var enemyPrefab = EnemyList[randomIndex];
 
       var position = spawnPoint ? spawnPoint.position : transform.position;
-      GameObject newEnemyObj = Instantiate(enemyPrefab, position, Quaternion.identity, transform.parent);
+      var newEnemyObj = Instantiate(enemyPrefab, position, Quaternion.identity, transform.parent);
 
       // Получаем компонент IEnemy от созданного объекта
-      IEnemy spawnedEnemy = newEnemyObj.GetComponent<IEnemy>();
-      if (spawnedEnemy != null && spawnedEnemy is EnemyFox enemyFoxScript)
+      var spawnedEnemy = newEnemyObj.GetComponent<IEnemy>();
+      if (spawnedEnemy is EnemyFox enemyFoxScript)
       {
         // Передаём цель врагу
         enemyFoxScript.SetTargetCastle(targetCastle);
       }
       else
       {
-        Debug.LogWarning("Spawned enemy does not implement IEnemy or is not EnemyFox script.", newEnemyObj);
+        Debug.LogWarning("Заспавненный враг не реализует IEnemy или не является скриптом EnemyFox.", newEnemyObj);
       }
       
       SpawnedList.Add(newEnemyObj);
     }
 
-    private void OnDisable()
-    {
-      if (spawnCoroutine == null) return;
-      
-      StopCoroutine(spawnCoroutine);
-      spawnCoroutine = null;
-    }
+    #endregion
   }
 }

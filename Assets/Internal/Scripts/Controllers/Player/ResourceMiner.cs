@@ -7,24 +7,45 @@ using UnityEngine.Events;
 
 namespace Internal.Scripts.Controllers.Player
 {
+  /// <summary>
+  /// Класс, отвечающий за сбор ресурсов при взаимодействии с ними
+  /// </summary>
   [RequireComponent(typeof(Collider))]
   public class ResourceMiner : MonoBehaviour
   {
+    #region Поля и события
+
     [CanBeNull]
     private IResource CurrentResource;
     
+    /// <summary>
+    /// Событие, вызываемое при сборе ресурса
+    /// </summary>
     public UnityEvent<string> OnCollect;
 
+    #endregion
+
+    #region Методы взаимодействия
+
+    /// <summary>
+    /// Вызывается для сбора текущего ресурса
+    /// </summary>
     public void OnMine()
     {
       CollectResource();
     }
 
+    #endregion
+
+    #region Внутренние методы
+
+    /// <summary>
+    /// Собирает текущий ресурс
+    /// </summary>
     private void CollectResource()
     {
       if (CurrentResource == null) return;
       
-      // Debug.Log($"Collecting resource: {CurrentResource.Id}, Amount left: {CurrentResource.Amount}");
       var resourceId = CurrentResource.Id;
 
       CurrentResource.Collect();
@@ -37,23 +58,36 @@ namespace Internal.Scripts.Controllers.Player
       CurrentResource = null;
     }
 
+    #endregion
+
+    #region Методы физики
+
+    /// <summary>
+    /// Вызывается при входе в триггер другого объекта
+    /// </summary>
+    /// <param name="other">Объект, с которым произошло столкновение</param>
     private void OnTriggerEnter(Collider other)
     {
       if (!other.TryGetComponent<IResource>(out var resource))
         return;
       
-      // Debug.Log($"Entered resource area ({resource.Id})");
       resource.OnSelected();
       CurrentResource = resource;
     }
+    
+    /// <summary>
+    /// Вызывается при выходе из триггера другого объекта
+    /// </summary>
+    /// <param name="other">Объект, с которым произошло столкновение</param>
     private void OnTriggerExit(Collider other)
     {
       if (!other.TryGetComponent<IResource>(out var resource))
         return;
       
-      // Debug.Log($"Exited resource area ({resource.Id})");
       resource.OnDeselected();
       CurrentResource = null;
     }
+
+    #endregion
   }
 }
