@@ -1,7 +1,3 @@
-using Internal.Scripts.Bootstrap;
-using Internal.Scripts.Bootstrap.Settings;
-using UnityEngine;
-
 namespace Internal.Scripts.Models
 {
   /// <summary>

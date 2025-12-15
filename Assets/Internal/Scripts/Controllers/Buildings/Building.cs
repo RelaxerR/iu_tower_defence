@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Internal.Scripts.Controllers.Enemies;
-using Internal.Scripts.Controllers.Player;
 
 namespace Internal.Scripts.Controllers.Buildings
 {

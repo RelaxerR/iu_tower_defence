@@ -1,5 +1,4 @@
 using Internal.Scripts.Bootstrap.Settings;
-using Internal.Scripts.Models;
 using UnityEngine;
 
 namespace Internal.Scripts.Controllers.Resources

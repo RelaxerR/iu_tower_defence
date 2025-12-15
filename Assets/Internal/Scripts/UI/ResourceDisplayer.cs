@@ -1,7 +1,4 @@
-using System;
 using Internal.Scripts.Bootstrap.Settings;
-using Internal.Scripts.Controllers.Player;
-using Internal.Scripts.Models;
 using TMPro;
 using UnityEngine;
 

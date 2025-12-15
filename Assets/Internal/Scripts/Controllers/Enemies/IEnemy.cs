@@ -1,4 +1,3 @@
-using UnityEngine;
 using Internal.Scripts.Controllers.Buildings;
 
 namespace Internal.Scripts.Controllers.Enemies

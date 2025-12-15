@@ -1,4 +1,3 @@
-using System;
 using Internal.Scripts.Bootstrap;
 using UnityEngine;
 using UnityEngine.Events;

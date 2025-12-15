@@ -3,7 +3,8 @@ namespace Internal.Scripts.Pathfinding
 {
   using System;
   using System.Collections.Generic;
-  using UnityEngine; // Для Debug.Log
+
+  // Для Debug.Log
 
   /// <summary>
   /// Простая реализация Min-Heap для пары (TElement, TPriority)
