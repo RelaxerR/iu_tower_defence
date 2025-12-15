@@ -62,6 +62,7 @@ namespace Internal.Scripts.Controllers.Enemies
       // Остановим движение перед атакой
       _creatureMover.SetInput(Vector2.zero, transform.position, false, false);
       // Уничтожим врага после атаки (или реализуйте другую логику)
+      _targetCastle.TakeDamage(_settings.DamageAmount);
       Die();
     }
 

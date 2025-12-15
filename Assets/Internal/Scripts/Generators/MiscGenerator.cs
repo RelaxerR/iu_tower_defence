@@ -24,7 +24,8 @@ namespace Internal.Scripts.Generators
       {
         GameObject prefab;
         Vector3 position;
-
+        var rotation = Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up);
+        
         switch (tile.Type)
         {
           case Tile.TileType.Road:
@@ -35,6 +36,7 @@ namespace Internal.Scripts.Generators
           case Tile.TileType.Castle:
             prefab = settings.PlayerCastlePrefabs[Random.Range(0, settings.PlayerCastlePrefabs.Length)];
             position = new Vector3(tile.X * settings.DefaultTileSize, settings.MiscHeightOffset, tile.Z * settings.DefaultTileSize);
+            rotation = Quaternion.identity;
             break;
           case Tile.TileType.Ground:
             prefab = settings.MiscObstaclePrefabs[Random.Range(0, settings.MiscObstaclePrefabs.Length)];
@@ -59,7 +61,6 @@ namespace Internal.Scripts.Generators
           default:
             throw new ArgumentOutOfRangeException();
         }
-        var rotation = Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up);
         Instantiate(
           prefab,
           position,

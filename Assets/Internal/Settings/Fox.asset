@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fox
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Enemies.EnemySettings
   prefab: {fileID: 1460946798294140863, guid: 1b6901d1ffcfe41fc84ed30a5000bd81, type: 3}
-  DamageAmount: 2
-  Speed: 2
+  DamageAmount: 100
+  Speed: 1
   MaxHealth: 100

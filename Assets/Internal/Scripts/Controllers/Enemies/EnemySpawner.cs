@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Internal.Scripts.Bootstrap;
 using Internal.Scripts.Controllers.Buildings;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -38,6 +39,23 @@ namespace Internal.Scripts.Controllers.Enemies
         return;
       }
       StartSpawning();
+      
+      GameManager.GetInstance().OnGameStateChanged.AddListener(state =>
+      {
+        if (state == GameManager.GameState.Game)
+        {
+          StartSpawning();
+        }
+        else
+        {
+          StopSpawning();
+        }
+      });
+    }
+
+    private void StopSpawning()
+    {
+      gameObject.SetActive(false);
     }
 
     private void StartSpawning()
