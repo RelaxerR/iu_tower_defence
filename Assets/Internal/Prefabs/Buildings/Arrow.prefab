@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Projectiles.Projectile
   speed: 10
-  damage: 30
+  damage: 15
   maxLifetime: 5
 --- !u!136 &7702482304644563070
 CapsuleCollider:

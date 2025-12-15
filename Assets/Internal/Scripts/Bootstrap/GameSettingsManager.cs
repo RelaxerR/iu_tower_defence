@@ -1,3 +1,4 @@
+using System;
 using Internal.Scripts.Bootstrap.Settings;
 using UnityEngine;
 
@@ -20,14 +21,22 @@ namespace Internal.Scripts.Bootstrap
     }
 
     private static GameSettingsManager _instance;
-
+    
+    // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// Возвращает экземпляр менеджера настроек игры, создавая его при необходимости
     /// </summary>
     /// <returns>Единственный экземпляр GameSettingsManager в сцене</returns>
     public static GameSettingsManager GetInstance()
     {
-      _instance ??= FindFirstObjectByType<GameSettingsManager>();
+      if (_instance)
+        return _instance;
+      _instance = FindFirstObjectByType<GameSettingsManager>();
+      if (_instance)
+        return _instance;
+      // Если не найден на сцене, создаем пустой объект
+      var settingsManagerObj = new GameObject("GameSettingsManager");
+      _instance = settingsManagerObj.AddComponent<GameSettingsManager>();
       return _instance;
     }
 
@@ -36,8 +45,16 @@ namespace Internal.Scripts.Bootstrap
     /// </summary>
     private void Awake()
     {
-      // Не уничтожаем объект при загрузке новой сцены
-      DontDestroyOnLoad(gameObject);
+      if (!_instance)
+      {
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+      }
+      else if (_instance != this)
+      {
+        // Уничтожаем дубликат
+        Destroy(gameObject);
+      }
     }
   }
 }

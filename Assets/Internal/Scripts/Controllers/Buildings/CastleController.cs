@@ -1,3 +1,4 @@
+using System;
 using Internal.Scripts.Bootstrap;
 using UnityEngine;
 using UnityEngine.Events;
@@ -60,9 +61,18 @@ namespace Internal.Scripts.Controllers.Buildings
       currentHealth -= damageAmount;
       OnHealthChanged.Invoke(currentHealth);
       
-      if (!(currentHealth <= 0)) return;
-      
-      // Замок уничтожен
+      if (currentHealth <= 0)
+      {
+        Die();
+      }
+    }
+
+    /// <summary>
+    /// Уничтожает замок и завершает игру поражением
+    /// </summary>
+    private void Die()
+    {
+      // Замок уничтожен - завершаем игру поражением
       GameManager.GetInstance().CurrentGameState = GameManager.GameState.GameLoose;
       Destroy(gameObject);
     }

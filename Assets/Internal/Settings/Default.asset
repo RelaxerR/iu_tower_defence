@@ -26,9 +26,9 @@ MonoBehaviour:
     RoadMaxLength: 4
     RoadMinTurns: 1
     RoadMaxTurns: 10
-    RoadLevelRequirement2: 10
-    RoadLevelRequirement3: 20
-    RoadLevelRequirement4: 30
+    RoadLevelRequirement2: 2
+    RoadLevelRequirement3: 3
+    RoadLevelRequirement4: 4
     TreeLevelModifier: 3
     StoneLevelModifier: 2
     DiamondLevelModifier: 1
@@ -110,8 +110,7 @@ MonoBehaviour:
     - {fileID: 8578878326311492229, guid: f488669713ae746f8b57aaf7f28f6734, type: 3}
   PlayerSettings:
     MoveSpeed: 20
-    RotationSpeed: 720
-    CastleMaxHealth: 1000
+    CastleMaxHealth: 100
   CameraSettings:
     CameraOffset: {x: 0, y: 10, z: -5}
     CameraFollowSpeed: 5
@@ -120,4 +119,4 @@ MonoBehaviour:
     BoundsMinXModifier: 2
     BoundsMaxXModifier: -2
   LevelMaxValue: 100
-  LevelDurationSeconds: 300
+  LevelDurationSeconds: 10

@@ -85,14 +85,32 @@ namespace Internal.Scripts.Bootstrap
     /// </summary>
     public GameState CurrentGameState
     {
-      get => currentGameState;
       set
       {
         if (currentGameState == value) return;
         currentGameState = value;
         OnGameStateChanged?.Invoke(currentGameState);
+        
+        // Загружаем сцену Bootstrap при достижении победы или поражения
+        if (currentGameState != GameState.GameWin && currentGameState != GameState.GameLoose)
+          return;
+        var win = currentGameState == GameState.GameWin;
+        
+        var level = PlayerPrefs.HasKey("Level") ? PlayerPrefs.GetInt("Level") : 1;
+        if (win) level++;
+        PlayerPrefs.SetInt("Level", level);
+        
+        PlayerPrefs.SetString("GameResult", win ? "Win" : "Loose");
+        OnGameResult?.Invoke(win);
+        // Загружаем сцену Bootstrap после небольшой задержки для отображения результата
+        StartCoroutine(LoadBootstrapSceneAfterDelay());
       }
     }
+
+    /// <summary>
+    /// Событие, вызываемое при достижении результата игры (победа или поражение)
+    /// </summary>
+    public UnityEvent<bool> OnGameResult;
 
     /// <summary>
     /// Запускает игровой процесс
@@ -122,8 +140,22 @@ namespace Internal.Scripts.Bootstrap
         yield return null;
       }
 
+      // По истечении времени завершаем игру победой
       OnLevelProgressChanged?.Invoke(targetProgress);
       CurrentGameState = GameState.GameWin;
+    }
+
+    /// <summary>
+    /// Загружает сцену Bootstrap с небольшой задержкой
+    /// </summary>
+    /// <returns>IEnumerator для корутины</returns>
+    private IEnumerator LoadBootstrapSceneAfterDelay()
+    {
+      // Небольшая задержка, чтобы игрок успел увидеть результат
+      yield return new WaitForSeconds(1.5f);
+      
+      // Загружаем сцену Bootstrap
+      SceneManager.GetInstance().LoadScene("GameResult");
     }
 
     /// <summary>

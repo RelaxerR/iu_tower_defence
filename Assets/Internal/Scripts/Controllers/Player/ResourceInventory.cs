@@ -46,7 +46,7 @@ namespace Internal.Scripts.Controllers.Player
         throw new ArgumentException($"Ресурс '{resourceId}' не найден в инвентаре.");
       
       resourceAmounts[resourceId]--;
-      if (resourceAmounts[resourceId] <= 0)
+      if (resourceAmounts[resourceId] < 0)
         throw new ArgumentException($"Количество ресурса '{resourceId}' не может быть меньше нуля.");
       
       OnResourceAmountChanged?.Invoke(resourceId, resourceAmounts[resourceId]);

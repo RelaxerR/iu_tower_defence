@@ -19,7 +19,8 @@ namespace Internal.Scripts.Generators
     /// </summary>
     private void Start()
     {
-      TileManager.GetInstance().InitTiles(1);
+      var level = PlayerPrefs.HasKey("Level") ? PlayerPrefs.GetInt("Level") : 1;
+      TileManager.GetInstance().InitTiles(level);
       GenerateGround();
     }
 

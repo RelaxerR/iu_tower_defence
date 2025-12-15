@@ -32,11 +32,22 @@ namespace Internal.Scripts.Bootstrap
     #endregion
 
     #region Жизненный цикл Unity
-
+    
+    /// <summary>
+    /// Вызывается при активации объекта, обеспечивает сохранение между сценами
+    /// </summary>
     private void Awake()
     {
-      DontDestroyOnLoad(gameObject);
-      _instance = this;
+      if (!_instance)
+      {
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+      }
+      else if (_instance != this)
+      {
+        // Уничтожаем дубликат
+        Destroy(gameObject);
+      }
     }
 
     #endregion
@@ -49,8 +60,9 @@ namespace Internal.Scripts.Bootstrap
     /// <param name="level">Уровень сложности, влияющий на количество дорог и ресурсов</param>
     public void InitTiles(int level)
     {
+      Tiles.Clear();
       var castleTile = GetCastleTile();
-      Tiles.Add(castleTile.pos, castleTile.tile);
+      if (!Tiles.TryAdd(castleTile.pos, castleTile.tile)) Tiles[castleTile.pos] = castleTile.tile;
       
       CreateRoadFromCastle(castleTile.pos, North);
       if (level > settings.RoadLevelRequirement2) CreateRoadFromCastle(castleTile.pos, South);
@@ -67,7 +79,14 @@ namespace Internal.Scripts.Bootstrap
     /// <returns>Единственный экземпляр TileManager в сцене</returns>
     public static TileManager GetInstance()
     {
-      _instance ??= FindFirstObjectByType<TileManager>();
+      if (_instance)
+        return _instance;
+      _instance = FindFirstObjectByType<TileManager>();
+      if (_instance)
+        return _instance;
+      // Если не найден на сцене, создаем пустой объект
+      var tileManagerObj = new GameObject("TileManager");
+      _instance = tileManagerObj.AddComponent<TileManager>();
       return _instance;
     }
 

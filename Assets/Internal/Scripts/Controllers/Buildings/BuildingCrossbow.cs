@@ -29,11 +29,7 @@ namespace Internal.Scripts.Controllers.Buildings
     #endregion
 
     #region Методы Unity
-
-    private void Awake()
-    {
-      Debug.LogError("[BuildingCrossbow] Префаб снаряда не назначен!", this);
-    }
+    
     /// <summary>
     /// Обновляет состояние строения, включая логику стрельбы
     /// </summary>

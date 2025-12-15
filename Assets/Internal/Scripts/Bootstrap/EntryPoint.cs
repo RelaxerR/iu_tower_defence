@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Internal.Scripts.Bootstrap
 {
@@ -10,22 +12,20 @@ namespace Internal.Scripts.Bootstrap
     private static EntryPoint _instance;
 
     /// <summary>
-    /// Возвращает экземпляр точки входа, создавая его при необходимости
-    /// </summary>
-    /// <returns>Единственный экземпляр EntryPoint в сцене</returns>
-    public static EntryPoint GetInstance()
-    {
-      _instance ??= FindFirstObjectByType<EntryPoint>();
-      return _instance;
-    }
-    
-    /// <summary>
     /// Вызывается при активации объекта, обеспечивает сохранение между сценами
     /// </summary>
     private void Awake()
     {
-      // Не уничтожаем объект при загрузке новой сцены
-      DontDestroyOnLoad(gameObject);
+      if (!_instance)
+      {
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+      }
+      else if (_instance != this)
+      {
+        // Уничтожаем дубликат
+        Destroy(gameObject);
+      }
     }
 
     /// <summary>
