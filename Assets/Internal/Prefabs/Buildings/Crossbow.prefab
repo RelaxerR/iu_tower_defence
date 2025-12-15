@@ -88,7 +88,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678072775796861849}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
@@ -96,7 +96,7 @@ Transform:
   - {fileID: 8729495387615577901}
   - {fileID: 1121821177061517118}
   m_Father: {fileID: 4062763252194652829}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &408022481964671829
 Animator:
   serializedVersion: 7
@@ -510,12 +510,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e2bde91e7049a095defb3b6190fd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Buildings.BuildingCrossbow
-  attackRange: 3
-  attackCooldown: 1
-  damage: 10
-  arrowPrefab: {fileID: 8226652884471266201, guid: ab4e59c3e17464dc78bc415fe020b879, type: 3}
-  firePoint: {fileID: 1850733613750130574}
-  projectileSpeed: 10
+  detectionRadius: 20
+  rotationSpeed: 50
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  fireRate: 1
+  projectilePrefab: {fileID: 8226652884471266201, guid: ab4e59c3e17464dc78bc415fe020b879, type: 3}
+  shootPoint: {fileID: 1850733613750130574}
 --- !u!1 &5586218771926723016
 GameObject:
   m_ObjectHideFlags: 0

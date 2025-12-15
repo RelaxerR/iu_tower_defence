@@ -69,6 +69,7 @@ namespace Internal.Scripts.Controllers.Enemies
     public void TakeDamage(float damage)
     {
       _health -= damage;
+      Debug.Log($"{name}: Took {damage} damage. Remaining health: {_health}", this);
       if (_health <= 0)
       {
         Die();

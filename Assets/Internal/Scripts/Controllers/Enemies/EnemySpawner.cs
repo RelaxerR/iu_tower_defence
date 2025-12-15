@@ -10,6 +10,8 @@ namespace Internal.Scripts.Controllers.Enemies
 {
   public class EnemySpawner : MonoBehaviour
   {
+    public List<GameObject> SpawnedList;
+    
     [SerializeField]
     private List<GameObject> EnemyList = new List<GameObject>();
 
@@ -97,6 +99,8 @@ namespace Internal.Scripts.Controllers.Enemies
       {
         Debug.LogWarning("Spawned enemy does not implement IEnemy or is not EnemyFox script.", newEnemyObj);
       }
+      
+      SpawnedList.Add(newEnemyObj);
     }
 
     private void OnDisable()
