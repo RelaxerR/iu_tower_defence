@@ -16,18 +16,28 @@ namespace Internal.Scripts.Controllers.Enemies
     private List<GameObject> EnemyList = new List<GameObject>();
 
     [SerializeField, Min(0.1f)]
-    private float spawnInterval = 2f; // интервал в секундах
+    private float initialSpawnInterval = 2f; // начальный интервал в секундах
+
+    [SerializeField, Min(0.0f)]
+    private float intervalDecreasePerSpawn = 0.05f; // на сколько уменьшать интервал после каждого спавна
+    
+    [SerializeField, Min(0.1f)]
+    private float minSpawnInterval = 0.3f; // минимальный интервал, которого не превысим
 
     [SerializeField]
     private Transform spawnPoint; // точка спавна (если null — используем позицию спавнера)
 
     private Coroutine spawnCoroutine;
+    private float currentSpawnInterval; // текущий интервал спавна
+    private int spawnCount = 0; // количество заспавненных врагов
     
     [CanBeNull]
     private CastleController targetCastle;
 
     private void Start()
     {
+      ResetSpawner(); // инициализируем начальные значения
+      
       if (EnemyList == null || EnemyList.Count == 0)
       {
         Debug.LogError("EnemySpawner: EnemyList is empty!", this);
@@ -55,8 +65,19 @@ namespace Internal.Scripts.Controllers.Enemies
       });
     }
 
+    private void ResetSpawner()
+    {
+      currentSpawnInterval = initialSpawnInterval;
+      spawnCount = 0;
+    }
+
     private void StopSpawning()
     {
+      if (spawnCoroutine != null)
+      {
+        StopCoroutine(spawnCoroutine);
+        spawnCoroutine = null;
+      }
       gameObject.SetActive(false);
     }
 
@@ -72,12 +93,17 @@ namespace Internal.Scripts.Controllers.Enemies
     {
       while (true)
       {
+        yield return new WaitForSeconds(currentSpawnInterval);
+        
         SpawnRandomEnemy();
-        yield return new WaitForSeconds(spawnInterval);
+        
+        // Уменьшаем интервал после спавна, но не ниже минимума
+        currentSpawnInterval = Mathf.Max(minSpawnInterval, currentSpawnInterval - intervalDecreasePerSpawn);
+        spawnCount++;
       }
     }
 
-// Внутри метода SpawnRandomEnemy() в EnemySpawner.cs
+    // Внутри метода SpawnRandomEnemy() в EnemySpawner.cs
     private void SpawnRandomEnemy()
     {
       if (EnemyList.Count == 0) return;
@@ -86,7 +112,7 @@ namespace Internal.Scripts.Controllers.Enemies
       var enemyPrefab = EnemyList[randomIndex];
 
       var position = spawnPoint ? spawnPoint.position : transform.position;
-      GameObject newEnemyObj = Instantiate(enemyPrefab, position, Quaternion.identity, transform.parent); // Изменили на enemyPrefab, а не enemyPrefab.gameObject
+      GameObject newEnemyObj = Instantiate(enemyPrefab, position, Quaternion.identity, transform.parent);
 
       // Получаем компонент IEnemy от созданного объекта
       IEnemy spawnedEnemy = newEnemyObj.GetComponent<IEnemy>();

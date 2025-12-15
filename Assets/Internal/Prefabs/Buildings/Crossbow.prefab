@@ -515,6 +515,11 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  CostResources:
+  - resourceId: Stone
+    amount: 1
+  - resourceId: Tree
+    amount: 5
   fireRate: 1
   projectilePrefab: {fileID: 8226652884471266201, guid: ab4e59c3e17464dc78bc415fe020b879, type: 3}
   shootPoint: {fileID: 1850733613750130574}

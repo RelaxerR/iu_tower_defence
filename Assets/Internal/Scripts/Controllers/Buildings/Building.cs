@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Internal.Scripts.Controllers.Enemies;
+using Internal.Scripts.Controllers.Player;
 using Unity.VisualScripting;
 
 namespace Internal.Scripts.Controllers.Buildings
@@ -19,13 +20,15 @@ namespace Internal.Scripts.Controllers.Buildings
 
         private Transform lastKnownTarget = null;
 
+        public List<ResourceCost> CostResources;
+
         protected bool CanShootByRotation;
 
         protected virtual void Start()
         {
             // Debug.Log($"[Building] {gameObject.name} initialized. Detection Radius: {detectionRadius}, Rotation Speed: {rotationSpeed}", this);
         }
-
+        
         protected virtual void Update()
         {
             // Debug.Log($"[Building] {gameObject.name} Update called.", this);

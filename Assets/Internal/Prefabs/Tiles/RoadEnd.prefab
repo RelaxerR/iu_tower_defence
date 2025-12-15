@@ -158,9 +158,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4438940e89bf45a29cd2e4fb3d59c163, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Controllers.Enemies.EnemySpawner
+  SpawnedList: []
   EnemyList:
   - {fileID: 6153671665360873297, guid: 8bf954a7ebd67432488defaac0f42cad, type: 3}
-  spawnInterval: 10
+  initialSpawnInterval: 5
+  intervalDecreasePerSpawn: 0.05
+  minSpawnInterval: 1
   spawnPoint: {fileID: 7359440562777921470}
 --- !u!114 &-6843004813113333650
 MonoBehaviour:
@@ -174,3 +177,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c93aee9db748c2af6e0a3781e04a9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Internal.Scripts.Models.TileController
+  Tile:
+    Type: 0
+    Direction: 0
+    X: 0
+    Z: 0
+    Rotation: 0
