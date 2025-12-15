@@ -48,7 +48,7 @@ namespace Internal.Scripts.Bootstrap
         if (currentGameState == value) return;
         currentGameState = value;
         OnGameStateChanged?.Invoke(currentGameState);
-        Debug.Log($"Game state changed to: {currentGameState}");
+        // Debug.Log($"Game state changed to: {currentGameState}");
       }
     }
 

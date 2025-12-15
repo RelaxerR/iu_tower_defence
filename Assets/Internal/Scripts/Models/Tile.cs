@@ -1,5 +1,9 @@
+using System;
+using UnityEngine;
+
 namespace Internal.Scripts.Models
 {
+  [Serializable]
   public class Tile
   {
     public enum TileType

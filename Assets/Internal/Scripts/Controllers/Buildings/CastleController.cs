@@ -28,10 +28,10 @@ namespace Internal.Scripts.Controllers.Buildings
     {
       currentHealth -= damageAmount;
       OnHealthChanged.Invoke(currentHealth);
-      Debug.Log($"Castle took {damageAmount} damage, current health: {currentHealth}");
+      // Debug.Log($"Castle took {damageAmount} damage, current health: {currentHealth}");
       if (!(currentHealth <= 0)) return;
       
-      Debug.Log("Castle has been destroyed!");
+      // Debug.Log("Castle has been destroyed!");
       GameManager.GetInstance().CurrentGameState = GameManager.GameState.GameLoose;
       Destroy(gameObject);
     }

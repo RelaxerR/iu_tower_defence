@@ -34,7 +34,7 @@ namespace Internal.Scripts.Bootstrap
     {
       DontDestroyOnLoad(gameObject);
       _instance = this;
-      Debug.Log("TileManager initialized");
+      // Debug.Log("TileManager initialized");
     }
 
     #endregion
@@ -46,10 +46,10 @@ namespace Internal.Scripts.Bootstrap
     /// </summary>
     public void InitTiles(int level)
     {
-      Debug.Log("Initializing tiles...");
+      // Debug.Log("Initializing tiles...");
       var castleTile = GetCastleTile();
       Tiles.Add(castleTile.pos, castleTile.tile);
-      Debug.Log($"Initialized castle tile at position: {castleTile.pos}");
+      // Debug.Log($"Initialized castle tile at position: {castleTile.pos}");
       
       CreateRoadFromCastle(castleTile.pos, North);
       if (level > settings.RoadLevelRequirement2) CreateRoadFromCastle(castleTile.pos, South);
@@ -58,7 +58,7 @@ namespace Internal.Scripts.Bootstrap
       
       InitResources(level);
       
-      Debug.Log($"Total tiles created: {Tiles.Count}");
+      // Debug.Log($"Total tiles created: {Tiles.Count}");
 
       FillGroundTiles();
     }
@@ -105,7 +105,7 @@ namespace Internal.Scripts.Bootstrap
         var tile = new Tile(type, posX, posZ, North);
         if (Tiles.TryAdd((posX, posZ), tile))
         {
-          Debug.Log($"Added resource tile of type {type} at ({posX}, {posZ})");
+          // Debug.Log($"Added resource tile of type {type} at ({posX}, {posZ})");
         }
         else
         {
@@ -143,13 +143,13 @@ namespace Internal.Scripts.Bootstrap
     {
       var posX = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDeltaX, settings.CastleMaxPositionDeltaX));
       var posZ = Mathf.RoundToInt(Random.Range(-settings.CastleMaxPositionDeltaZ, settings.CastleMaxPositionDeltaZ));
-      Debug.Log($"Generating castle at position: ({posX}, {posZ})");
+      // Debug.Log($"Generating castle at position: ({posX}, {posZ})");
       return ((posX, posZ), new Tile(Castle, posX, posZ, North));
     }
 
     private void CreateRoadFromCastle((int x, int z) castlePos, Tile.TileDirection initialDirection)
     {
-      Debug.Log($"Creating road from castle at {castlePos} in direction {initialDirection}");
+      // Debug.Log($"Creating road from castle at {castlePos} in direction {initialDirection}");
       var startPos = GetNextPosition(castlePos.x, castlePos.z, initialDirection);
       var startRotation = GetRotationForDirection(initialDirection);
 
@@ -161,7 +161,7 @@ namespace Internal.Scripts.Bootstrap
     /// </summary>
     private void CreateRoadWithTurns(int startX, int startZ, Tile.TileDirection initialDirection, int initialRotation)
     {
-      Debug.Log($"Starting road creation from ({startX}, {startZ}) in direction {initialDirection}");
+      // Debug.Log($"Starting road creation from ({startX}, {startZ}) in direction {initialDirection}");
       
       var currentX = startX;
       var currentZ = startZ;
@@ -174,13 +174,13 @@ namespace Internal.Scripts.Bootstrap
       Tile.TileDirection? previousTurnDirection = null;
 
       var turnsCount = Random.Range(settings.RoadMinTurns, settings.RoadMaxTurns + 1);
-      Debug.Log($"Road will have {turnsCount} turns");
+      // Debug.Log($"Road will have {turnsCount} turns");
 
       for (var turn = 0; turn < turnsCount; turn++)
       {
         if (IsOutOfMapBounds(currentX, currentZ))
         {
-          Debug.Log($"Road stopped at ({currentX}, {currentZ}) - out of bounds");
+          // Debug.Log($"Road stopped at ({currentX}, {currentZ}) - out of bounds");
           isRechedBounds = true;
           break;
         }
@@ -190,12 +190,12 @@ namespace Internal.Scripts.Bootstrap
         if (turn == turnsCount - 1)
         {
           segmentLength = GetMaxLengthToBoundary(currentX, currentZ, currentDirection);
-          Debug.Log($"Last segment length adjusted to {segmentLength} to reach map boundary");
+          // Debug.Log($"Last segment length adjusted to {segmentLength} to reach map boundary");
           currentDirection = initialDirection;
           currentRotation = GetRotationForDirection(currentDirection);
         }
 
-        Debug.Log($"Creating road segment #{turn + 1}: length={segmentLength}, direction={currentDirection}");
+        // Debug.Log($"Creating road segment #{turn + 1}: length={segmentLength}, direction={currentDirection}");
         var (endX, endZ) = CreateStraightRoadSegment(currentX, currentZ, currentDirection, segmentLength, currentRotation);
         prevCurrentX = currentX;
         prevCurrentZ = currentZ;
@@ -210,7 +210,7 @@ namespace Internal.Scripts.Bootstrap
           : new[] { excludedDirection };
 
         var nextDirection = GetNextDirection(currentDirection, excludedDirections);
-        Debug.Log($"Next turn direction: {nextDirection}");
+        // Debug.Log($"Next turn direction: {nextDirection}");
         previousTurnDirection = nextDirection;
         currentDirection = nextDirection;
         currentRotation = GetRotationForDirection(currentDirection);
@@ -219,7 +219,7 @@ namespace Internal.Scripts.Bootstrap
       if (isRechedBounds) Tiles[(prevCurrentX, prevCurrentZ)].Type = RoadEnd;
       else Tiles[(currentX, currentZ)].Type = RoadEnd;
       
-      Debug.Log($"Finished road creation ending at ({currentX}, {currentZ})");
+      // Debug.Log($"Finished road creation ending at ({currentX}, {currentZ})");
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ namespace Internal.Scripts.Bootstrap
       int length,
       int rotation)
     {
-      Debug.Log($"Creating straight road segment from ({startX}, {startZ}), direction={direction}, length={length}");
+      // Debug.Log($"Creating straight road segment from ({startX}, {startZ}), direction={direction}, length={length}");
       
       int endX = startX, endZ = startZ;
 
@@ -242,7 +242,7 @@ namespace Internal.Scripts.Bootstrap
 
         if (IsOutOfMapBounds(x, z))
         {
-          Debug.Log($"Road segment stopped at ({x}, {z}) - out of bounds");
+          // Debug.Log($"Road segment stopped at ({x}, {z}) - out of bounds");
           break;
         }
 
@@ -258,11 +258,11 @@ namespace Internal.Scripts.Bootstrap
             {
               existingTile.Type = RoadCorner;
               existingTile.Rotation = GetCornerRotation(existingTile.Direction, direction);
-              Debug.Log($"Updated tile at ({x}, {z}) to corner: {existingTile.Direction} -> {direction}, rotation={existingTile.Rotation}");
+              // Debug.Log($"Updated tile at ({x}, {z}) to corner: {existingTile.Direction} -> {direction}, rotation={existingTile.Rotation}");
             }
             else
             {
-              Debug.Log($"Tile at ({x}, {z}) already exists with same direction, skipping");
+              // Debug.Log($"Tile at ({x}, {z}) already exists with same direction, skipping");
             }
           }
           else
@@ -272,14 +272,14 @@ namespace Internal.Scripts.Bootstrap
         }
         else
         {
-          Debug.Log($"Added road tile at ({x}, {z}) with rotation {rotation}");
+          // Debug.Log($"Added road tile at ({x}, {z}) with rotation {rotation}");
         }
 
         endX = x;
         endZ = z;
       }
 
-      Debug.Log($"Road segment completed, ending at ({endX}, {endZ})");
+      // Debug.Log($"Road segment completed, ending at ({endX}, {endZ})");
       return (endX, endZ);
     }
 
@@ -295,7 +295,7 @@ namespace Internal.Scripts.Bootstrap
         East or West => settings.MapSizeX - Mathf.Abs(x),
         _ => 1
       };
-      Debug.Log($"Max length to boundary from ({x}, {z}) in direction {direction}: {maxLength}");
+      // Debug.Log($"Max length to boundary from ({x}, {z}) in direction {direction}: {maxLength}");
       return maxLength;
     }
 
@@ -313,7 +313,7 @@ namespace Internal.Scripts.Bootstrap
         (East, South) => 0,
         _ => 180
       };
-      Debug.Log($"Corner rotation for {from} -> {to}: {rotation}");
+      // Debug.Log($"Corner rotation for {from} -> {to}: {rotation}");
       return rotation;
     }
 
@@ -327,7 +327,7 @@ namespace Internal.Scripts.Bootstrap
         West => (x - 1, z),
         _ => (x, z)
       };
-      Debug.Log($"Next position from ({x}, {z}) in direction {direction}: ({pos.Item1}, {pos.Item2})");
+      // Debug.Log($"Next position from ({x}, {z}) in direction {direction}: ({pos.Item1}, {pos.Item2})");
       return pos;
     }
 
@@ -354,7 +354,7 @@ namespace Internal.Scripts.Bootstrap
         West => 0,
         _ => 0
       };
-      Debug.Log($"Rotation for direction {direction}: {rotation}");
+      // Debug.Log($"Rotation for direction {direction}: {rotation}");
       return rotation;
     }
 
@@ -365,10 +365,10 @@ namespace Internal.Scripts.Bootstrap
         .Where(dir => dir != currentDirection && dir != GetOpposite(currentDirection) && !excludedDirections.Contains(dir))
         .ToList();
       
-      Debug.Log($"Current direction: {currentDirection}, Excluded: [{string.Join(", ", excludedDirections)}], Valid: [{string.Join(", ", validDirections)}]");
+      // Debug.Log($"Current direction: {currentDirection}, Excluded: [{string.Join(", ", excludedDirections)}], Valid: [{string.Join(", ", validDirections)}]");
       
       var nextDirection = validDirections[Random.Range(0, validDirections.Count)];
-      Debug.Log($"Selected next direction: {nextDirection}");
+      // Debug.Log($"Selected next direction: {nextDirection}");
       return nextDirection;
     }
 
@@ -382,7 +382,7 @@ namespace Internal.Scripts.Bootstrap
         West => East,
         _ => dir
       };
-      Debug.Log($"Opposite of {dir} is {opposite}");
+      // Debug.Log($"Opposite of {dir} is {opposite}");
       return opposite;
     }
 
@@ -395,7 +395,7 @@ namespace Internal.Scripts.Bootstrap
       var outOfBounds = Mathf.Abs(x) > settings.MapSizeX || Mathf.Abs(z) > settings.MapSizeZ;
       if (outOfBounds)
       {
-        Debug.Log($"Position ({x}, {z}) is out of map bounds");
+        // Debug.Log($"Position ({x}, {z}) is out of map bounds");
       }
       return outOfBounds;
     }
